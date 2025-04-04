@@ -1,0 +1,171 @@
+/* General Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Header Styles */
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav-link {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+/* Product Card Styles */
+.product-card {
+    transition: transform 0.3s ease;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-card img {
+    height: 200px;
+    object-fit: cover;
+}
+
+.product-card .card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.product-card .price {
+    color: #dc3545;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.product-card .original-price {
+    text-decoration: line-through;
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+/* Category Section */
+.category-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.category-card img {
+    transition: transform 0.3s ease;
+}
+
+.category-card:hover img {
+    transform: scale(1.05);
+}
+
+.category-card .category-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    padding: 20px;
+    color: white;
+}
+
+/* Banner Section */
+.banner {
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.banner-content {
+    background: rgba(0,0,0,0.5);
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+}
+
+/* Footer Styles */
+footer {
+    margin-top: 50px;
+}
+
+.social-links a:hover {
+    opacity: 0.8;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .banner {
+        height: 300px;
+    }
+    
+    .product-card img {
+        height: 150px;
+    }
+}
+
+/* Cart Badge */
+.badge {
+    position: relative;
+    top: -8px;
+}
+
+/* Search Bar */
+.form-control:focus {
+    box-shadow: none;
+    border-color: #dc3545;
+}
+
+/* Button Styles */
+.btn-outline-light:hover {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+/* Product Details Page */
+.product-gallery {
+    margin-bottom: 30px;
+}
+
+.product-gallery img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.product-info h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.product-specs {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+/* Cart Page */
+.cart-item {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.cart-summary {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    position: sticky;
+    top: 20px;
+} 

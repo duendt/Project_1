@@ -1,6 +1,6 @@
 <?php
 //Đường dẫn
-define("APP_URL", "http://localhost/base_php2/");
+define("APP_URL", "http://localhost/project_1/");
 define("ROOT_DIR", __DIR__);
 //Database
 define('HOST', "localhost");
