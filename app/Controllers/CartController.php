@@ -69,7 +69,7 @@ class CartController {
         echo json_encode(['success' => true]);
     }
 
-    private function getCartItems() {
+    public function getCartItems() {
         // TODO: Lấy thông tin chi tiết sản phẩm từ database
         return [
             [
@@ -97,7 +97,7 @@ class CartController {
         ];
     }
 
-    private function getCartSummary() {
+    public function getCartSummary() {
         $items = $this->getCartItems();
         $subtotal = 0;
         foreach ($items as $item) {
