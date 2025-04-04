@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "eftec/bladeone",
-            "version": "4.17.1",
+            "version": "4.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EFTEC/BladeOne.git",
-                "reference": "7f2bb41b7dfc8be16a83ea544ce0981c844f7ecc"
+                "reference": "fb51dcd21ba6c998b96d26ac5babfca1bd05acdf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EFTEC/BladeOne/zipball/7f2bb41b7dfc8be16a83ea544ce0981c844f7ecc",
-                "reference": "7f2bb41b7dfc8be16a83ea544ce0981c844f7ecc",
+                "url": "https://api.github.com/repos/EFTEC/BladeOne/zipball/fb51dcd21ba6c998b96d26ac5babfca1bd05acdf",
+                "reference": "fb51dcd21ba6c998b96d26ac5babfca1bd05acdf",
                 "shasum": ""
             },
             "require": {
@@ -61,9 +61,9 @@
             ],
             "support": {
                 "issues": "https://github.com/EFTEC/BladeOne/issues",
-                "source": "https://github.com/EFTEC/BladeOne/tree/4.17.1"
+                "source": "https://github.com/EFTEC/BladeOne/tree/4.18"
             },
-            "time": "2024-12-30T17:31:52+00:00"
+            "time": "2025-02-22T00:12:47+00:00"
         },
         {
             "name": "phroute/phroute",

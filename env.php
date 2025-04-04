@@ -1,10 +1,10 @@
 <?php
 //Đường dẫn
-define("APP_URL", "http://localhost/base_php2/");
+define("APP_URL", "http://127.0.0.1/Project_1/");
 define("ROOT_DIR", __DIR__);
 //Database
 define('HOST', "localhost");
-define('DBNAME', "");
+define('DBNAME', "project_1");
 define('USERNAME', "root");
 define('PASSWORD', "");
-define('PORT', "3306");
+define('PORT', "3307");

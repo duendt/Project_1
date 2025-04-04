@@ -1,7 +1,6 @@
 <?php
 
+use App\Controller\HomeController;
 use App\Models\Post;
 
-$router->get('/', function () {
-    return "Phần dàn cho khách";
-});
+$router->get('/', [HomeController::class,'index']);
