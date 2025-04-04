@@ -138,7 +138,7 @@
                 </div>
 
                 <!-- Content here -->
-                <?php include_once __DIR__ . "/../admin/{$url_parts[1]}/index.php"; ?>
+                @yield('content')
             </div>
         </div>
     </div>
