@@ -10,7 +10,6 @@
 
 <body>
     <div class="container">
-
         <header>Header</header>
         @yield('content')
         <footer>Footer</footer>

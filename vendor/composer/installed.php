@@ -20,9 +20,9 @@
             'dev_requirement' => false,
         ),
         'eftec/bladeone' => array(
-            'pretty_version' => '4.17.1',
-            'version' => '4.17.1.0',
-            'reference' => '7f2bb41b7dfc8be16a83ea544ce0981c844f7ecc',
+            'pretty_version' => '4.18',
+            'version' => '4.18.0.0',
+            'reference' => 'fb51dcd21ba6c998b96d26ac5babfca1bd05acdf',
             'type' => 'library',
             'install_path' => __DIR__ . '/../eftec/bladeone',
             'aliases' => array(),
