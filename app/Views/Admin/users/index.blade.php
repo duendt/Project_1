@@ -1,3 +1,6 @@
+@extends('layouts.admin')
+@section('title', 'Quản lý người dùng')
+@section('content')
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Quản lý người dùng</h2>
@@ -227,3 +230,4 @@
         </div>
     </div>
 </div> 
+@endsection

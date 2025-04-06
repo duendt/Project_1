@@ -1,37 +1,67 @@
 <?php
+
 namespace App\Controller\AdminController;
 
 use App\Models\Brand;
-use App\Models\Config as ModelsConfig;
 use App\Models\Product;
-use App\Models\ProductConfig;
-use App\Models\ProductType;
 use App\Models\ProductVariant;
-use PSpell\Config;
-
 class BrandController
 {
-   
 
+    public function index()
+    {
+        $listBrand = Brand::all();
+        return view('Admin.brands.index', compact('listBrand'));
+    }
     public function create()
     {
-        
+        return view('Admin.brands.createbrand');
     }
 
     public function store()
     {
         $data = $_POST;
-
         // Validate data
-        if (empty($data['name'])) {
-            die('Validation failed: Name is required.');
+        if (empty($data['name']) || empty($data['description'])) {
+            $_SESSION['error'] = 'Các trường không được để trống!';
+            return redirect('/admin/brands/create');
+        } else {
+            // Update product
+            Brand::create($data);
+            $_SESSION['message'] = 'Thêm dữ liệu thành công!';
+            return redirect('/admin/brands/create');
         }
+    }
 
-        // Create brand
-        Brand::create($data);
+    public function edit($id)
+    {
+        $brand = Brand::find($id);
+        return view('Admin.brands.editbrand',compact(var_name: 'brand'));
+    }
 
-        // Redirect to the brand list page
-        header('Location: /admin/brands');
-        exit;
+    public function update($id) {
+        $data = $_POST;
+        // Validate data
+        if (empty($data['name']) || empty($data['description'])) {
+            $_SESSION['error'] = 'Các trường không được để trống!';
+            return redirect('/admin/brands/edit/'.$id);
+        } else {
+            // Update product
+            Brand::update($data, $id);
+            $_SESSION['message'] = 'Cập nhật dữ liệu thành công!';
+            return redirect('/admin/brands/edit/'.$id);
+        }
+    }
+
+    public function destroy($id)
+    {
+        $listIdProduct = Product::select('id_product')->where('id_brand', '=', $id)->get();
+        foreach ($listIdProduct as $item) {
+            ProductVariant::deleteByProductId($item->id_product);
+        }
+        Product::deleteByBrandId($id);
+        Brand::delete($id);
+        $_SESSION['confim'] = 'Xóa dữ liệu thành công!';
+        return redirect('/admin/brands');
     }
 }

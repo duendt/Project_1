@@ -30,29 +30,14 @@ class ProductController
             compact('listProduct', 'listType', 'listBrand', 'listColor', 'listConfig', 'listStorage')
         );
     }
-    public function productVariant($id)
-    {
-        $listVariant = ProductVariant::select(['product_variant.*'])
-            ->where('id_product', '=', $id)
-            ->get();
-        dd($listVariant);
-    }
-    public function configVariant($id)
-    {
-        $configVariant = ProductConfig::select(['config_product.*'])
-            ->where('id_config', '=', $id)
-            ->get();
-        dd($configVariant);
-    }
 
-    public function destroy($id)
-    {
-        Product::delete($id);
-    }
 
+    // product:
     public function create()
     {
-        // return view('create');
+        $listBrand = Brand::all();
+        $listType = ProductType::all();
+        return view('Admin.products.createproduct', compact('listBrand', 'listType'));
     }
 
     public function store()
@@ -60,32 +45,45 @@ class ProductController
         $data = $_POST;
 
         // Validate data
-        if (empty($data['name']) || empty($data['id_brand']) || empty($data['description'])) {
-            die('Validation failed: Name, Brand, and Description are required.');
+        if (empty($data['name']) || empty($data['warranty']) || empty($data['description'])) {
+            $_SESSION['error'] = 'Các trường không được để trống!';
+            return redirect('/admin/products/create');
+        } else {
+            // Update product
+            Product::create($data);
+            $_SESSION['message'] = 'Cập nhật dữ liệu thành công!';
+            return redirect('/admin/products/create');
         }
-
-        // Create product
-        Product::create($data);
     }
 
     public function edit($id)
     {
         $product = Product::find($id);
+        $brands = Brand::all();
         $listType = ProductType::all();
-        // return view('Admin.products.index', compact('product', 'listType'));
+        return view('Admin.products.editproduct', data: compact('product', 'listType', 'brands'));
     }
-
-
     public function update($id)
     {
         $data = $_POST;
         // Validate data
         if (empty($data['name']) || empty($data['id_brand']) || empty($data['description'])) {
-            die('Validation failed: Name, Brand, and Description are required.');
+            $_SESSION['error'] = 'Các trường không được để trống!';
+            return redirect('/admin/products/edit/' . $id);
+        } else {
+            // Update product
+            Product::update($data, $id);
+            $_SESSION['message'] = 'Cập nhật dữ liệu thành công!';
+            return redirect('/admin/products/edit/' . $id);
         }
-
-        // Update product
-        Product::update($data, $id);
-        return redirect('/admin/products/index');
     }
+    public function destroy($id)
+    {
+        ProductVariant::deleteByProductId($id);
+        Product::delete((int)$id);
+        $_SESSION['confim'] = 'Xóa sản phẩm thành công!';
+        return redirect('/admin/products');
+    }
+
+    // 
 }
