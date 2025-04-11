@@ -192,4 +192,25 @@ class BaseModel
         // dd($this->sqlBuilder);
         return $this;
     }
+
+    /**
+     * createGetId: thêm mới dữ liệu từ 1 bảng và trả về ID vừa thêm
+     * $data: dữ liệu mảng có key và value trong key là tên cột còn value là giá trị tương ứng
+     */
+    public static function createGetId($data)
+    {
+        $model =  new static;
+        $sql = "INSERT INTO $model->tableName(";
+        $values = "VALUES(";
+        foreach ($data as $column => $val) {
+            $sql .= "`$column`, ";
+            $values .= ":$column, ";
+        }
+
+        $sql = rtrim($sql, ', ') . ") " . rtrim($values, ', ') . ")";
+        $stmt = $model->conn->prepare($sql);
+        $stmt->execute($data);
+        
+        return $model->conn->lastInsertId();
+    }
 }

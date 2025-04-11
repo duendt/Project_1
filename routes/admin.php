@@ -67,17 +67,20 @@ $router->group(['prefix' => 'admin'], function ($router) {
     $router->post('/types/edit/{id}', handler: [TypeController::class, 'update']);
     $router->post('/types/delete/{id}', handler: [TypeController::class, 'destroy']);
     // Orders
-    $router->get('/orders', [OrderController::class, 'index']);
-    $router->get('/orders/{id}', [OrderController::class, 'show']);
-    $router->put('/orders/{id}/status', [OrderController::class, 'updateStatus']);
+    $router->get('/order', [OrderController::class, 'index']);
+    $router->get('/order/edit/{id}', [OrderController::class, 'edit']);
+    $router->post('/order/update/{id}', [OrderController::class, 'update']);
+    $router->post('/order/delete/{id}', [OrderController::class, 'delete']);
+    $router->post('/order/add-product/{id}', [OrderController::class, 'addProduct']);
+    $router->post('/order/update-quantity/{id}', [OrderController::class, 'updateQuantity']);
+    $router->post('/order/remove-product/{id}', [OrderController::class, 'removeProduct']);
     // Users
     $router->get('/users', [UserController::class, 'index']);
     $router->get('/users/create', [UserController::class, 'create']);
-    $router->post('/users', [UserController::class, 'store']);
-    $router->get('/users/{id}/edit', [UserController::class, 'edit']);
-    $router->put('/users/{id}', [UserController::class, 'update']);
-    $router->delete('/users/{id}', [UserController::class, 'destroy']);
-    $router->put('/users/{id}/permissions', [UserController::class, 'updatePermissions']);
+    $router->get('/users/edit/{id}', [UserController::class, 'edit']);
+    $router->post('/users/create', [UserController::class, 'store']);
+    $router->post('/users/edit/{id}', [UserController::class, 'update']);
+    $router->post('/users/delete/{id}', [UserController::class, 'destroy']);
     // Carts
     // $router->get('/carts', [CartController::class, 'index']);
     // $router->get('/carts/{id}', [CartController::class, 'show']);

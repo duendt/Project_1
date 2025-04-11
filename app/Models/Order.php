@@ -2,6 +2,6 @@
 namespace App\Models;
 
 class Order extends BaseModel{
-    protected $tableName = 'oder';
+    protected $tableName = '`order`';
     protected $primaryKey = 'id_order';
 }
