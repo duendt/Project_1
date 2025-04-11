@@ -194,23 +194,30 @@ class BaseModel
     }
 
     /**
-     * createGetId: thêm mới dữ liệu từ 1 bảng và trả về ID vừa thêm
-     * $data: dữ liệu mảng có key và value trong key là tên cột còn value là giá trị tương ứng
+     * @method orderBy: Phương thức sắp xếp kết quả
+     * @param $column: tên cột cần sắp xếp
+     * @param $direction: hướng sắp xếp (ASC hoặc DESC)
      */
-    public static function createGetId($data)
+    public function orderBy($column, $direction = 'ASC')
     {
-        $model =  new static;
-        $sql = "INSERT INTO $model->tableName(";
-        $values = "VALUES(";
-        foreach ($data as $column => $val) {
-            $sql .= "`$column`, ";
-            $values .= ":$column, ";
+        $direction = strtoupper($direction);
+        if (!in_array($direction, ['ASC', 'DESC'])) {
+            $direction = 'ASC';
         }
 
-        $sql = rtrim($sql, ', ') . ") " . rtrim($values, ', ') . ")";
-        $stmt = $model->conn->prepare($sql);
-        $stmt->execute($data);
-        
-        return $model->conn->lastInsertId();
+        $this->sqlBuilder .= " ORDER BY `$column` $direction";
+        return $this;
+    }
+
+    /**
+     * @method limit: Phương thức giới hạn số lượng kết quả trả về
+     * @param $limit: số lượng kết quả tối đa
+     * @param $offset: vị trí bắt đầu lấy (mặc định là 0)
+     */
+    public function limit($limit, $offset = 0)
+    {
+        $this->sqlBuilder .= " LIMIT $offset, $limit";
+        // Không sử dụng params vì có thể gây xung đột tên
+        return $this;
     }
 }

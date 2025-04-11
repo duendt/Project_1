@@ -17,9 +17,7 @@ use App\Controller\AdminController\VariantController;
 //auth
 
 $router->group(['prefix' => 'admin'], function ($router) {
-    $router->get('/', [DashboardController::class, 'index']);  // Use dashboard as the default admin page
-    // Remove the redirect
-    
+    $router->get('/', [DashboardController::class, 'index']);
     $router->get('/products', [ProductController::class, 'index']);    
     $router->get('/products/create', [ProductController::class, 'create']);
     $router->get('/products/edit/{id}', handler: [ProductController::class, 'edit']);

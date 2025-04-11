@@ -1,3 +1,7 @@
+@extends('layouts.main')
+@section('title', 'TechStore')
+@section('content')
+
 <!-- Banner Section -->
 <div class="banner mb-4" style="background-image: url('/images/banner.jpg');">
     <div class="container">
@@ -59,26 +63,24 @@
     <div class="container">
         <h2 class="section-title mb-4">Sản phẩm nổi bật</h2>
         <div class="row">
-            <?php foreach ($featuredProducts as $product): ?>
+            @foreach ($productsFeatured as $product)
+
             <div class="col-md-3 mb-4">
                 <div class="card product-card">
-                    <img src="<?php echo $product['image']; ?>" class="card-img-top" alt="<?php echo $product['name']; ?>">
+                    <img src="{{ APP_URL . 'public/images/' . $product->image }}" class="card-img-top" alt="{{ $product->product_name }}">
                     <div class="card-body">
-                        <h5 class="card-title"><?php echo $product['name']; ?></h5>
+                        <h5 class="card-title">{{ $product->product_name }}</h5>
                         <div class="mb-2">
-                            <span class="price"><?php echo number_format($product['price'], 0, ',', '.'); ?>đ</span>
-                            <?php if ($product['original_price']): ?>
-                            <span class="original-price ms-2"><?php echo number_format($product['original_price'], 0, ',', '.'); ?>đ</span>
-                            <?php endif; ?>
+                            <span class="price">{{ number_format($product->price, 0, ',', '.') }}đ</span>
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
                             <button class="btn btn-outline-danger btn-sm">Thêm vào giỏ</button>
-                            <a href="/san-pham/<?php echo $product['slug']; ?>" class="btn btn-link btn-sm">Chi tiết</a>
+                            <a href="/san-pham/{{ $product->id_prodvar }}" class="btn btn-link btn-sm">Chi tiết</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <?php endforeach; ?>
+            @endforeach
         </div>
     </div>
 </section>
@@ -89,24 +91,24 @@
         <h2 class="section-title mb-4">Sản phẩm mới</h2>
         <div class="row">
             <?php foreach ($newProducts as $product): ?>
-            <div class="col-md-3 mb-4">
-                <div class="card product-card">
-                    <img src="<?php echo $product['image']; ?>" class="card-img-top" alt="<?php echo $product['name']; ?>">
-                    <div class="card-body">
-                        <h5 class="card-title"><?php echo $product['name']; ?></h5>
-                        <div class="mb-2">
-                            <span class="price"><?php echo number_format($product['price'], 0, ',', '.'); ?>đ</span>
-                            <?php if ($product['original_price']): ?>
-                            <span class="original-price ms-2"><?php echo number_format($product['original_price'], 0, ',', '.'); ?>đ</span>
-                            <?php endif; ?>
-                        </div>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <button class="btn btn-outline-danger btn-sm">Thêm vào giỏ</button>
-                            <a href="/san-pham/<?php echo $product['slug']; ?>" class="btn btn-link btn-sm">Chi tiết</a>
+                <div class="col-md-3 mb-4">
+                    <div class="card product-card">
+                        <img src="<?php echo $product['image']; ?>" class="card-img-top" alt="<?php echo $product['name']; ?>">
+                        <div class="card-body">
+                            <h5 class="card-title"><?php echo $product['name']; ?></h5>
+                            <div class="mb-2">
+                                <span class="price"><?php echo number_format($product['price'], 0, ',', '.'); ?>đ</span>
+                                <?php if ($product['original_price']): ?>
+                                    <span class="original-price ms-2"><?php echo number_format($product['original_price'], 0, ',', '.'); ?>đ</span>
+                                <?php endif; ?>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <button class="btn btn-outline-danger btn-sm">Thêm vào giỏ</button>
+                                <a href="/san-pham/<?php echo $product['slug']; ?>" class="btn btn-link btn-sm">Chi tiết</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             <?php endforeach; ?>
         </div>
     </div>
@@ -150,17 +152,18 @@
         <h2 class="section-title mb-4">Tin tức công nghệ</h2>
         <div class="row">
             <?php foreach ($news as $article): ?>
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img src="<?php echo $article['image']; ?>" class="card-img-top" alt="<?php echo $article['title']; ?>">
-                    <div class="card-body">
-                        <h5 class="card-title"><?php echo $article['title']; ?></h5>
-                        <p class="card-text"><?php echo $article['excerpt']; ?></p>
-                        <a href="/tin-tuc/<?php echo $article['slug']; ?>" class="btn btn-link">Đọc thêm</a>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="<?php echo $article['image']; ?>" class="card-img-top" alt="<?php echo $article['title']; ?>">
+                        <div class="card-body">
+                            <h5 class="card-title"><?php echo $article['title']; ?></h5>
+                            <p class="card-text"><?php echo $article['excerpt']; ?></p>
+                            <a href="/tin-tuc/<?php echo $article['slug']; ?>" class="btn btn-link">Đọc thêm</a>
+                        </div>
                     </div>
                 </div>
-            </div>
             <?php endforeach; ?>
         </div>
     </div>
-</section> 
+</section>
+@endsection
