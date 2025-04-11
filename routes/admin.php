@@ -2,7 +2,7 @@
 use App\Controller\AdminController\ProductController;
 use App\Controller\AdminController\BrandController;
 use App\Controller\AdminController\TypeController;
-use App\Controllers\Admin\DashboardController;
+use App\Controller\AdminController\DashboardController;  // Note the correct namespace with 's'
 use App\Controller\AdminController\OrderController;
 use App\Controller\AdminController\UserController;
 use App\Controllers\Admin\CartController;
@@ -17,7 +17,9 @@ use App\Controller\AdminController\VariantController;
 //auth
 
 $router->group(['prefix' => 'admin'], function ($router) {
-    // Products
+    $router->get('/', [DashboardController::class, 'index']);  // Use dashboard as the default admin page
+    // Remove the redirect
+    
     $router->get('/products', [ProductController::class, 'index']);    
     $router->get('/products/create', [ProductController::class, 'create']);
     $router->get('/products/edit/{id}', handler: [ProductController::class, 'edit']);
