@@ -8,19 +8,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="/css/style.css">
 </head>
+@yield('styles')
 <body>
     <!-- Header -->
     <header class="bg-dark text-white">
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container">
-                <a class="navbar-brand" href="/">TechStore</a>
+                <a class="navbar-brand" href="{{ APP_URL }}">TechStore</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="/"><i class="fas fa-home"></i> Trang chủ</a>
+                            <a class="nav-link" href="{{ APP_URL }}"><i class="fas fa-home"></i> Trang chủ</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
@@ -45,13 +46,25 @@
                         <button class="btn btn-outline-light" type="submit"><i class="fas fa-search"></i></button>
                     </form>
                     <div class="d-flex">
-                        <a href="/cart" class="btn btn-outline-light me-2">
+                        <a href="{{ APP_URL . 'cart' }}" class="btn btn-outline-light me-2">
                             <i class="fas fa-shopping-cart"></i>
                             <span class="badge bg-danger">0</span>
                         </a>
-                        <a href="/login" class="btn btn-outline-light">
+                        @if(isset($_SESSION['user_id']))
+                        <div class="dropdown">
+                            <button class="btn btn-outline-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="{{ APP_URL . 'user/profile/'. $_SESSION['user_id'] }}">Xem thông tin</a></li>
+                                <li><a class="dropdown-item" href="{{ APP_URL . 'logout'}}">Đăng xuất</a></li>
+                            </ul>
+                        </div>
+                        @else
+                        <a href="{{ APP_URL . 'login' }}" class="btn btn-outline-light">
                             <i class="fas fa-user"></i>
                         </a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -113,4 +126,4 @@
     @yield('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html> 
+</html>

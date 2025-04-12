@@ -8,7 +8,6 @@
         <div class="banner-content">
             <h1>Chào mừng đến với TechStore</h1>
             <p class="lead">Khám phá những sản phẩm công nghệ mới nhất với giá tốt nhất</p>
-            <a href="/san-pham-moi" class="btn btn-danger">Xem ngay</a>
         </div>
     </div>
 </div>
@@ -63,19 +62,17 @@
     <div class="container">
         <h2 class="section-title mb-4">Sản phẩm nổi bật</h2>
         <div class="row">
-            @foreach ($productsFeatured as $product)
-
+            @foreach ($featuredProducts as $product)
             <div class="col-md-3 mb-4">
                 <div class="card product-card">
-                    <img src="{{ APP_URL . 'public/images/' . $product->image }}" class="card-img-top" alt="{{ $product->product_name }}">
+                    <img src="{{ APP_URL . 'public/images/' . $product->image }}" class="card-img-top" alt="{{ $product->name }}">
                     <div class="card-body">
-                        <h5 class="card-title">{{ $product->product_name }}</h5>
+                        <h5 class="card-title">{{ $product->name }}</h5>
                         <div class="mb-2">
                             <span class="price">{{ number_format($product->price, 0, ',', '.') }}đ</span>
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
-                            <button class="btn btn-outline-danger btn-sm">Thêm vào giỏ</button>
-                            <a href="/san-pham/{{ $product->id_prodvar }}" class="btn btn-link btn-sm">Chi tiết</a>
+                            <a href="{{ APP_URL . 'san-pham/' . $product->id_product }}" class="btn btn-primary">Chi tiết</a>
                         </div>
                     </div>
                 </div>
@@ -90,26 +87,22 @@
     <div class="container">
         <h2 class="section-title mb-4">Sản phẩm mới</h2>
         <div class="row">
-            <?php foreach ($newProducts as $product): ?>
-                <div class="col-md-3 mb-4">
-                    <div class="card product-card">
-                        <img src="<?php echo $product['image']; ?>" class="card-img-top" alt="<?php echo $product['name']; ?>">
-                        <div class="card-body">
-                            <h5 class="card-title"><?php echo $product['name']; ?></h5>
-                            <div class="mb-2">
-                                <span class="price"><?php echo number_format($product['price'], 0, ',', '.'); ?>đ</span>
-                                <?php if ($product['original_price']): ?>
-                                    <span class="original-price ms-2"><?php echo number_format($product['original_price'], 0, ',', '.'); ?>đ</span>
-                                <?php endif; ?>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <button class="btn btn-outline-danger btn-sm">Thêm vào giỏ</button>
-                                <a href="/san-pham/<?php echo $product['slug']; ?>" class="btn btn-link btn-sm">Chi tiết</a>
-                            </div>
+            @foreach ($newProducts as $product)
+            <div class="col-md-3 mb-4">
+                <div class="card product-card">
+                    <img src="{{ APP_URL . 'public/images/' . $product->image }}" class="card-img-top" alt="{{ $product->name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ $product->name }}</h5>
+                        <div class="mb-2">
+                            <span class="price">{{ number_format($product->price, 0, ',', '.') }}đ</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="{{ APP_URL . 'san-pham/' . $product->id_product }}" class="btn btn-primary">Chi tiết</a>
                         </div>
                     </div>
                 </div>
-            <?php endforeach; ?>
+            </div>
+            @endforeach
         </div>
     </div>
 </section>
@@ -151,18 +144,36 @@
     <div class="container">
         <h2 class="section-title mb-4">Tin tức công nghệ</h2>
         <div class="row">
-            <?php foreach ($news as $article): ?>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="<?php echo $article['image']; ?>" class="card-img-top" alt="<?php echo $article['title']; ?>">
-                        <div class="card-body">
-                            <h5 class="card-title"><?php echo $article['title']; ?></h5>
-                            <p class="card-text"><?php echo $article['excerpt']; ?></p>
-                            <a href="/tin-tuc/<?php echo $article['slug']; ?>" class="btn btn-link">Đọc thêm</a>
-                        </div>
+            @foreach ($newsList as $article)
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="{{ APP_URL . 'public/images/' . $article->image }}" class="card-img-top" alt="{{ $article->title }}" style="height: 200px; object-fit: cover;">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ $article->title }}</h5>
+                        <p class="card-text mb-4">
+                            @if (!empty($article->content))
+                                {{ mb_substr($article->content, 0, 150, 'UTF-8') }}
+                                @if (mb_strlen($article->content, 'UTF-8') > 150)
+                                    ...
+                                @endif
+                            @else
+                                <em>Không có nội dung</em>
+                            @endif
+                        </p>
+                        <p class="text-muted mt-auto">
+                            <small>Ngày đăng: 
+                                @if (!empty($article->created_at))
+                                    {{ date('d/m/Y', strtotime($article->created_at)) }}
+                                @else
+                                    Không xác định
+                                @endif
+                            </small>
+                        </p>
+                        <a href="{{ APP_URL . 'tin-tuc/' . $article->id }}" class="btn btn-primary mt-2">Đọc thêm</a>
                     </div>
                 </div>
-            <?php endforeach; ?>
+            </div>
+            @endforeach
         </div>
     </div>
 </section>

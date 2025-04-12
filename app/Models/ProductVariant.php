@@ -37,4 +37,34 @@ class ProductVariant extends BaseModel{
         $stmt->bindParam(':id_config', $configId, \PDO::PARAM_INT);
         return $stmt->execute();
     }
+    
+    public static function getColorImagesByProductId($productId)
+    {
+        $model = new static;
+        $sql = "SELECT DISTINCT pv.image, pv.id_color, c.name as color_name 
+                FROM product_variant pv 
+                JOIN color c ON c.id_color = pv.id_color 
+                WHERE pv.id_product = :id_product";
+        $stmt = $model->conn->prepare($sql);
+        $stmt->bindParam(':id_product', $productId, \PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_OBJ);
+    }
+    
+    public static function getProductVariants($productId)
+    {
+        $model = new static;
+        $sql = "SELECT pv.*, p.name as product_name, c.name as color_name, s.storage,
+                cf.cpu, cf.ram, cf.gpu, cf.screen, cf.operating_system, cf.camera, cf.battery, cf.id_config
+                FROM product_variant pv 
+                JOIN products p ON p.id_product = pv.id_product 
+                JOIN color c ON c.id_color = pv.id_color 
+                JOIN storage s ON s.id_storage = pv.id_storage 
+                JOIN config_product cf ON cf.id_config = pv.id_config
+                WHERE pv.id_product = :id_product";
+        $stmt = $model->conn->prepare($sql);
+        $stmt->bindParam(':id_product', $productId, \PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(\PDO::FETCH_OBJ);
+    }
 }

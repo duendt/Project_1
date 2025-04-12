@@ -129,10 +129,9 @@
                             <i class="bi bi-person-circle"></i> Admin
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-person"></i> Hồ sơ</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Cài đặt</a></li>
+                            <li><a class="dropdown-item" href="{{ APP_URL . 'user/profile' }}"><i class="bi bi-person"></i> Hồ sơ</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a></li>
+                            <li><a class="dropdown-item" href="{{ APP_URL . 'logout' }}"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a></li>
                         </ul>
                     </div>
                 </div>

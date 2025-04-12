@@ -8,7 +8,6 @@
  <div class="banner-content">
  <h1>Chào mừng đến với TechStore</h1>
  <p class="lead">Khám phá những sản phẩm công nghệ mới nhất với giá tốt nhất</p>
- <a href="/san-pham-moi" class="btn btn-danger">Xem ngay</a>
  </div>
  </div>
 </div>
@@ -63,20 +62,18 @@
  <div class="container">
  <h2 class="section-title mb-4">Sản phẩm nổi bật</h2>
  <div class="row">
- <?php $__currentLoopData = $productsFeatured; $this->addLoop($__currentLoopData);$this->getFirstLoop();
+ <?php $__currentLoopData = $featuredProducts; $this->addLoop($__currentLoopData);$this->getFirstLoop();
  foreach($__currentLoopData as $product): $loop = $this->incrementLoopIndices();  ?>
-
  <div class="col-md-3 mb-4">
  <div class="card product-card">
- <img src="<?php echo \htmlentities(APP_URL . 'public/images/' . $product->image??'', ENT_QUOTES, 'UTF-8', false); ?>" class="card-img-top" alt="<?php echo \htmlentities($product->product_name??'', ENT_QUOTES, 'UTF-8', false); ?>">
+ <img src="<?php echo \htmlentities(APP_URL . 'public/images/' . $product->image??'', ENT_QUOTES, 'UTF-8', false); ?>" class="card-img-top" alt="<?php echo \htmlentities($product->name??'', ENT_QUOTES, 'UTF-8', false); ?>">
  <div class="card-body">
- <h5 class="card-title"><?php echo \htmlentities($product->product_name??'', ENT_QUOTES, 'UTF-8', false); ?></h5>
+ <h5 class="card-title"><?php echo \htmlentities($product->name??'', ENT_QUOTES, 'UTF-8', false); ?></h5>
  <div class="mb-2">
  <span class="price"><?php echo \htmlentities(number_format($product->price, 0, ',', '.')??'', ENT_QUOTES, 'UTF-8', false); ?>đ</span>
  </div>
  <div class="d-flex justify-content-between align-items-center">
- <button class="btn btn-outline-danger btn-sm">Thêm vào giỏ</button>
- <a href="/san-pham/<?php echo \htmlentities($product->id_prodvar??'', ENT_QUOTES, 'UTF-8', false); ?>" class="btn btn-link btn-sm">Chi tiết</a>
+ <a href="<?php echo \htmlentities(APP_URL . 'san-pham/' . $product->id_product??'', ENT_QUOTES, 'UTF-8', false); ?>" class="btn btn-primary">Chi tiết</a>
  </div>
  </div>
  </div>
@@ -91,26 +88,23 @@
  <div class="container">
  <h2 class="section-title mb-4">Sản phẩm mới</h2>
  <div class="row">
- <?php foreach ($newProducts as $product): ?>
+ <?php $__currentLoopData = $newProducts; $this->addLoop($__currentLoopData);$this->getFirstLoop();
+ foreach($__currentLoopData as $product): $loop = $this->incrementLoopIndices();  ?>
  <div class="col-md-3 mb-4">
  <div class="card product-card">
- <img src="<?php echo $product['image']; ?>" class="card-img-top" alt="<?php echo $product['name']; ?>">
+ <img src="<?php echo \htmlentities(APP_URL . 'public/images/' . $product->image??'', ENT_QUOTES, 'UTF-8', false); ?>" class="card-img-top" alt="<?php echo \htmlentities($product->name??'', ENT_QUOTES, 'UTF-8', false); ?>">
  <div class="card-body">
- <h5 class="card-title"><?php echo $product['name']; ?></h5>
+ <h5 class="card-title"><?php echo \htmlentities($product->name??'', ENT_QUOTES, 'UTF-8', false); ?></h5>
  <div class="mb-2">
- <span class="price"><?php echo number_format($product['price'], 0, ',', '.'); ?>đ</span>
- <?php if ($product['original_price']): ?>
- <span class="original-price ms-2"><?php echo number_format($product['original_price'], 0, ',', '.'); ?>đ</span>
- <?php endif; ?>
+ <span class="price"><?php echo \htmlentities(number_format($product->price, 0, ',', '.')??'', ENT_QUOTES, 'UTF-8', false); ?>đ</span>
  </div>
  <div class="d-flex justify-content-between align-items-center">
- <button class="btn btn-outline-danger btn-sm">Thêm vào giỏ</button>
- <a href="/san-pham/<?php echo $product['slug']; ?>" class="btn btn-link btn-sm">Chi tiết</a>
+ <a href="<?php echo \htmlentities(APP_URL . 'san-pham/' . $product->id_product??'', ENT_QUOTES, 'UTF-8', false); ?>" class="btn btn-primary">Chi tiết</a>
  </div>
  </div>
  </div>
  </div>
- <?php endforeach; ?>
+ <?php endforeach; $this->popLoop(); $loop = $this->getFirstLoop(); ?>
  </div>
  </div>
 </section>
@@ -152,18 +146,39 @@
  <div class="container">
  <h2 class="section-title mb-4">Tin tức công nghệ</h2>
  <div class="row">
- <?php foreach ($news as $article): ?>
+ <?php $__currentLoopData = $newsList; $this->addLoop($__currentLoopData);$this->getFirstLoop();
+ foreach($__currentLoopData as $article): $loop = $this->incrementLoopIndices();  ?>
  <div class="col-md-4 mb-4">
- <div class="card">
- <img src="<?php echo $article['image']; ?>" class="card-img-top" alt="<?php echo $article['title']; ?>">
- <div class="card-body">
- <h5 class="card-title"><?php echo $article['title']; ?></h5>
- <p class="card-text"><?php echo $article['excerpt']; ?></p>
- <a href="/tin-tuc/<?php echo $article['slug']; ?>" class="btn btn-link">Đọc thêm</a>
+ <div class="card h-100">
+ <img src="<?php echo \htmlentities(APP_URL . 'public/images/' . $article->image??'', ENT_QUOTES, 'UTF-8', false); ?>" class="card-img-top" alt="<?php echo \htmlentities($article->title??'', ENT_QUOTES, 'UTF-8', false); ?>" style="height: 200px; object-fit: cover;">
+ <div class="card-body d-flex flex-column">
+ <h5 class="card-title"><?php echo \htmlentities($article->title??'', ENT_QUOTES, 'UTF-8', false); ?></h5>
+ <p class="card-text mb-4">
+ <?php if(!empty($article->content)): ?>
+ <?php echo \htmlentities(mb_substr($article->content, 0, 150, 'UTF-8')??'', ENT_QUOTES, 'UTF-8', false); ?>
+
+ <?php if(mb_strlen($article->content, 'UTF-8') > 150): ?>
+ ...
+ <?php endif; ?>
+ <?php else: ?>
+ <em>Không có nội dung</em>
+ <?php endif; ?>
+ </p>
+ <p class="text-muted mt-auto">
+ <small>Ngày đăng: 
+ <?php if(!empty($article->created_at)): ?>
+ <?php echo \htmlentities(date('d/m/Y', strtotime($article->created_at))??'', ENT_QUOTES, 'UTF-8', false); ?>
+
+ <?php else: ?>
+ Không xác định
+ <?php endif; ?>
+ </small>
+ </p>
+ <a href="<?php echo \htmlentities(APP_URL . 'tin-tuc/' . $article->id??'', ENT_QUOTES, 'UTF-8', false); ?>" class="btn btn-primary mt-2">Đọc thêm</a>
  </div>
  </div>
  </div>
- <?php endforeach; ?>
+ <?php endforeach; $this->popLoop(); $loop = $this->getFirstLoop(); ?>
  </div>
  </div>
 </section>

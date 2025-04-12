@@ -220,4 +220,10 @@ class BaseModel
         // Không sử dụng params vì có thể gây xung đột tên
         return $this;
     }
+
+    public function groupBy($column)
+{
+    $this->sqlBuilder .= " GROUP BY $column";
+    return $this;
+}
 }

@@ -1,8 +1,9 @@
 <?php
+
 use App\Controller\AdminController\ProductController;
 use App\Controller\AdminController\BrandController;
 use App\Controller\AdminController\TypeController;
-use App\Controller\AdminController\DashboardController;  // Note the correct namespace with 's'
+use App\Controller\AdminController\DashboardController;
 use App\Controller\AdminController\OrderController;
 use App\Controller\AdminController\UserController;
 use App\Controllers\Admin\CartController;
@@ -11,14 +12,24 @@ use App\Controller\AdminController\ConfigController;
 use App\Controller\AdminController\StorageController;
 use App\Controller\AdminController\ColorController;
 use App\Controller\AdminController\VariantController;
-// Dashboard
-// $router->get('/admin/dashboard', [DashboardController::class, 'index']);
 
-//auth
+// Kiểm tra quyền admin trước khi cho phép truy cập vào các route của admin
+$router->filter('admin', function () {
+    // Kiểm tra người dùng đã đăng nhập chưa
+    if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+        return redirect('login');
+    }
 
-$router->group(['prefix' => 'admin'], function ($router) {
+    // Kiểm tra người dùng có quyền admin không
+    if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] != 1) {
+        return redirect('');
+    }
+});
+
+$router->group(['prefix' => 'admin', 'before' => 'admin'], function ($router) {
     $router->get('/', [DashboardController::class, 'index']);
-    $router->get('/products', [ProductController::class, 'index']);    
+
+    $router->get('/products', [ProductController::class, 'index']);
     $router->get('/products/create', [ProductController::class, 'create']);
     $router->get('/products/edit/{id}', handler: [ProductController::class, 'edit']);
     $router->post('/products/create', [ProductController::class, 'store']);
@@ -57,8 +68,8 @@ $router->group(['prefix' => 'admin'], function ($router) {
     $router->get('/brands/create', [BrandController::class, 'create']);
     $router->get('/brands/edit/{id}', [BrandController::class, 'edit']);
     $router->post('/brands/create', [BrandController::class, 'store']);
-    $router->post('/brands/edit/{id}',[BrandController::class, 'update']);
-    $router->post('/brands/delete/{id}',[BrandController::class, 'destroy']);
+    $router->post('/brands/edit/{id}', [BrandController::class, 'update']);
+    $router->post('/brands/delete/{id}', [BrandController::class, 'destroy']);
     // Product Types
     $router->get('/types', [TypeController::class, 'index']);
     $router->get('/types/create', [TypeController::class, 'create']);
@@ -81,18 +92,6 @@ $router->group(['prefix' => 'admin'], function ($router) {
     $router->post('/users/create', [UserController::class, 'store']);
     $router->post('/users/edit/{id}', [UserController::class, 'update']);
     $router->post('/users/delete/{id}', [UserController::class, 'destroy']);
-    // Carts
-    // $router->get('/carts', [CartController::class, 'index']);
-    // $router->get('/carts/{id}', [CartController::class, 'show']);
-    // $router->post('/carts/{id}/convert-to-order', [CartController::class, 'convertToOrder']);
-    // // Vouchers 
-    // $router->get('/vouchers', [VoucherController::class, 'index']);
-    // $router->get('/vouchers/create', [VoucherController::class, 'create']);
-    // $router->post('/vouchers', [VoucherController::class, 'store']);
-    // $router->get('/vouchers/{id}/edit', [VoucherController::class, 'edit']);
-    // $router->put('/vouchers/{id}', [VoucherController::class, 'update']);
-    // $router->delete('/vouchers/{id}', [VoucherController::class, 'destroy']);
-    // $router->get('/vouchers/{id}/usage', [VoucherController::class, 'usageDetails']);
 });
 
 
@@ -139,4 +138,4 @@ $router->group(['prefix' => 'admin'], function ($router) {
 // $router->get('/admin/vouchers/{id}/edit', [VoucherController::class, 'edit']);
 // $router->put('/admin/vouchers/{id}', [VoucherController::class, 'update']);
 // $router->delete('/admin/vouchers/{id}', [VoucherController::class, 'destroy']);
-// $router->get('/admin/vouchers/{id}/usage', [VoucherController::class, 'usageDetails']); 
+// $router->get('/admin/vouchers/{id}/usage', [VoucherController::class, 'usageDetails']);
