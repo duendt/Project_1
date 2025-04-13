@@ -192,7 +192,11 @@ class BaseModel
         // dd($this->sqlBuilder);
         return $this;
     }
-
+    public function OderBy($column, $by = 'ASC')
+    {
+        $this->sqlBuilder .= " ORDER BY $column $by";
+        return $this;
+    }
     /**
      * @method orderBy: Phương thức sắp xếp kết quả
      * @param $column: tên cột cần sắp xếp
@@ -222,8 +226,8 @@ class BaseModel
     }
 
     public function groupBy($column)
-{
-    $this->sqlBuilder .= " GROUP BY $column";
-    return $this;
-}
+    {
+        $this->sqlBuilder .= " GROUP BY $column";
+        return $this;
+    }
 }
