@@ -78,7 +78,7 @@
                         @php
                         $paymentMethods = [
                         0 => 'Thanh toán khi nhận hàng',
-                        1 => 'Thanh toán online'
+                        1 => 'Chuyển khoản ngân hàng'
                         ];
                         $statusClasses = [
                         0 => 'badge bg-warning',
@@ -113,7 +113,7 @@
 
                             <td>
                                 <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#orderDetailModal{{ $order->id_order }}">
-                                    <i class="bi bi-eye"></i> Chi tiết
+                                   <i class="bi bi-eye"></i> Chi tiết
                                 </button>
                                 <a href="{{ APP_URL . 'admin/order/edit/' . $order->id_order }}" class="btn btn-primary btn-sm">
                                     <i class="bi bi-pencil-square"></i> Chỉnh sửa

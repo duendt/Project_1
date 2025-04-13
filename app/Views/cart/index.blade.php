@@ -36,13 +36,6 @@
                         <div class="col-6">
                             <h5 class="mb-0">Sản phẩm</h5>
                         </div>
-                        <div class="col-6 text-end">
-                            <form action="{{ APP_URL . 'api/cart/clear' }}" method="post" id="clearCartForm">
-                                <button type="button" class="btn btn-outline-danger btn-sm" onclick="confirmClearCart()">
-                                    <i class="fas fa-trash-alt me-2"></i>Xóa tất cả
-                                </button>
-                            </form>
-                        </div>
                     </div>
                 </div>
                 <div class="card-body p-0">
@@ -71,7 +64,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-1 col-5 text-end mt-3 mt-md-0">
-                                    <form action="{{ APP_URL . 'api/cart/remove' }}" method="post" class="remove-form">
+                                    <form action="{{ APP_URL . 'cart/remove' }}" method="post" class="remove-form">
                                         <input type="hidden" name="cart_id" value="{{ $item->id_cart }}">
                                         <button type="button" class="btn btn-sm btn-link text-danger remove-item" data-id="{{ $item->id_cart }}">
                                             <i class="fas fa-times"></i>
@@ -113,9 +106,17 @@
                         <span class="fw-bold text-danger h5" id="total-amount">{{ number_format($totalAmount, 0, ',', '.') }}đ</span>
                     </div>
                     <div class="d-grid gap-2">
-                        <a href="{{ APP_URL . 'thanh-toan' }}" class="btn btn-primary">
-                            Tiến hành thanh toán
-                        </a>
+                        <form id="checkout-form" action="{{ APP_URL . 'checkout' }}" method="POST">
+                            @foreach ($cartItems as $item)
+                            <input type="hidden" name="order_items[{{ $item->id_cart }}][variant_id]" value="{{ $item->id_prodvar }}">
+                            <input type="hidden" name="order_items[{{ $item->id_cart }}][quantity]" value="{{ $item->quantity }}">
+                            <input type="hidden" name="order_items[{{ $item->id_cart }}][price]" value="{{ $item->price }}">
+                            <input type="hidden" name="fromCart" value="true">
+                            @endforeach
+                            <button type="submit" class="btn btn-primary">
+                                Tiến hành thanh toán
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -179,49 +180,76 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Cập nhật số lượng sản phẩm
 function updateQuantity(cartId, quantity) {
-    fetch('{{ APP_URL . "api/cart/update" }}', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            cart_id: cartId,
-            quantity: quantity
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Cập nhật số lượng hiển thị
-            document.querySelector(`.quantity-input[data-id="${cartId}"]`).value = data.quantity;
-            
-            // Cập nhật tổng tiền của sản phẩm
-            document.querySelector(`.item-subtotal[data-id="${cartId}"]`).textContent = data.subtotal_formatted;
-            
-            // Cập nhật tổng giỏ hàng
-            updateCartTotal();
+    if (!cartId || quantity < 1) {
+        alert('Dữ liệu không hợp lệ. Vui lòng kiểm tra lại.');
+        return;
+    }
+
+    // Hiển thị loading
+    const inputElement = document.querySelector(`.quantity-input[data-id="${cartId}"]`);
+    inputElement.value = '...';
+
+    // Cập nhật UI trước khi gửi request
+    const row = inputElement.closest('.cart-item');
+    const priceText = row.querySelector('.fw-bold.text-danger').textContent;
+    const price = parseFloat(priceText.replace(/[^\d]/g, ''));
+    const subtotal = price * quantity;
+
+    // Cập nhật thành tiền ngay lập tức
+    row.querySelector('.item-subtotal').textContent = new Intl.NumberFormat('vi-VN').format(subtotal) + 'đ';
+
+    // Cập nhật tổng tiền ngay lập tức
+    updateCartTotal();
+
+    // Gửi request qua XMLHttpRequest
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '{{ APP_URL }}cart/update-quantity', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    xhr.onload = function() {
+        if (this.status >= 200 && this.status < 300) {
+            try {
+                const response = JSON.parse(this.responseText);
+                if (response.success) {
+                    // Cập nhật giá trị số lượng
+                    inputElement.value = quantity;
+
+                    // Cập nhật tổng giỏ hàng
+                    document.getElementById('subtotal').textContent = response.total_formatted;
+                    document.getElementById('total-amount').textContent = response.total_formatted;
+                } else {
+                    alert('Có lỗi xảy ra: ' + response.error);
+                }
+            } catch (e) {
+                console.error('Lỗi phân tích JSON:', e);
+                inputElement.value = quantity; // Khôi phục giá trị
+            }
         } else {
-            alert('Có lỗi xảy ra: ' + data.error);
+            console.error('Lỗi HTTP:', this.status);
+            inputElement.value = quantity; // Khôi phục giá trị
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Có lỗi xảy ra khi cập nhật giỏ hàng');
-    });
+    };
+
+    xhr.onerror = function() {
+        console.error('Lỗi kết nối mạng');
+        inputElement.value = quantity; // Khôi phục giá trị
+    };
+
+    // Gửi request
+    xhr.send(`cart_id=${cartId}&quantity=${quantity}`);
 }
 
 // Cập nhật tổng giỏ hàng
 function updateCartTotal() {
     let total = 0;
-    
-    document.querySelectorAll('.item-subtotal').forEach(element => {
-        const subtotalText = element.textContent.replace(/\./g, '').replace('đ', '');
-        total += parseInt(subtotalText);
+    document.querySelectorAll('.item-subtotal').forEach(cell => {
+        const subtotalText = cell.textContent;
+        const subtotal = parseFloat(subtotalText.replace(/[^\d]/g, ''));
+        total += subtotal;
     });
-    
-    const formattedTotal = new Intl.NumberFormat('vi-VN').format(total) + 'đ';
-    document.getElementById('subtotal').textContent = formattedTotal;
-    document.getElementById('total-amount').textContent = formattedTotal;
+
+    document.getElementById('subtotal').textContent = new Intl.NumberFormat('vi-VN').format(total) + 'đ';
+    document.getElementById('total-amount').textContent = new Intl.NumberFormat('vi-VN').format(total) + 'đ';
 }
 
 // Xác nhận xóa tất cả
@@ -231,4 +259,4 @@ function confirmClearCart() {
     }
 }
 </script>
-@endsection 
+@endsection

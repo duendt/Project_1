@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 @yield('styles')
+
 <body>
     <!-- Header -->
     <header class="bg-dark text-white">
@@ -56,6 +58,9 @@
                                 <i class="fas fa-user"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                @if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == 1)
+                                <li><a class="dropdown-item" href="{{ APP_URL . 'admin' }}">Trang quản trị</a></li>
+                                @endif
                                 <li><a class="dropdown-item" href="{{ APP_URL . 'user/profile/'. $_SESSION['user_id'] }}">Xem thông tin</a></li>
                                 <li><a class="dropdown-item" href="{{ APP_URL . 'logout'}}">Đăng xuất</a></li>
                             </ul>
@@ -70,7 +75,20 @@
             </div>
         </nav>
     </header>
-
+    @if(isset($_SESSION['success']))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ $_SESSION['success'] }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @php unset($_SESSION['success']); @endphp
+    @endif
+    @if(isset($_SESSION['error']))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ $_SESSION['error'] }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    @php unset($_SESSION['error']); @endphp
+    @endif
     <!-- Main Content -->
     <main class="py-4">
         <div class="container">
@@ -126,4 +144,5 @@
     @yield('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

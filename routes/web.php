@@ -2,8 +2,9 @@
 
 use App\Controller\HomeController;
 use App\Controller\DetailProductController;
-use App\Controller\CartController;
-use App\Controller\CheckoutController;
+use App\Controller\ClientController\CartController;
+use App\Controller\ClientController\CheckoutController;
+use App\Controller\ClientController\OrderController;
 use App\Controller\Auth\AuthController;
 
 $router->get('/', [HomeController::class,'index']);
@@ -27,13 +28,16 @@ $router->filter('auth', function() {
 $router->group(['prefix' => 'cart', 'before' => 'auth'], function ($router) {
     $router->get('/', [CartController::class, 'index']);
     $router->post('/add', [CartController::class, 'add']);
-    $router->post('/update', [CartController::class, 'update']);
-    $router->post('/remove', [CartController::class, 'remove']);
-    $router->post('/clear', [CartController::class, 'clear']);
+    $router->post('/update-quantity', [CartController::class, 'updateQuantity']);
+    $router->post('/remove', [CartController::class, 'removeItem']);
 });
 
 // Checkout routes
 $router->group(['before' => 'auth'], function ($router) {
-    $router->get('/thanh-toan', [CheckoutController::class, 'index']);
-    $router->post('/thanh-toan', [CheckoutController::class, 'process']);
+    $router->post('/checkout', [CheckoutController::class, 'index']);
+    $router->post('/check-out', [CheckoutController::class, 'process']); // Đảm bảo route này tồn tại
+});
+
+$router->group(['prefix' => 'order', 'before' => 'auth'], function ($router) {
+    $router->get('/', [OrderController::class, 'index']);
 });

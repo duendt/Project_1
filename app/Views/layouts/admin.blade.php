@@ -111,7 +111,7 @@
                             </a>
                         </li>
                         <li class="nav-item mt-4">
-                            <a class="nav-link" href="/">
+                            <a class="nav-link" href="{{ APP_URL }}">
                                 <i class="bi bi-box-arrow-left"></i> Quay lại trang chủ
                             </a>
                         </li>
