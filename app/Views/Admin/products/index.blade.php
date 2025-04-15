@@ -36,12 +36,6 @@
                 <a href="{{ APP_URL . 'admin/products/create'}}" class="btn btn-primary mb-3">
                     <i class="bi bi-plus-lg"></i> Thêm sản phẩm
                 </a>
-                @if (isset($_SESSION['confim']))
-                <div class="alert alert-success">
-                    {{ $_SESSION['confim'] }}
-                    @php unset($_SESSION['confim']); @endphp
-                </div>
-                @endif
                 <select name="typeProduct" id="typeProduct" class="form-select" aria-label="Default select example" style="border: 1px solid black;">
                     <option value="">Tất cả sản phẩm</option>
                     @foreach ($listType as $list)

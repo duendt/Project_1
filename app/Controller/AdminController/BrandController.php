@@ -55,11 +55,15 @@ class BrandController
 
     public function destroy($id)
     {
-        $listIdProduct = Product::select('id_product')->where('id_brand', '=', $id)->get();
-        foreach ($listIdProduct as $item) {
-            ProductVariant::deleteByProductId($item->id_product);
+        $listProduct = Product::select('id_product')->where('id_brand', '=', $id)->get();
+
+        // Kiểm tra nếu $listProduct có dữ liệu
+        if (count($listProduct) > 0) {
+            $_SESSION['error'] = 'Không thể xóa thương hiệu này vì có sản phẩm liên quan!';
+            return redirect('admin/brands');
         }
-        Product::deleteByBrandId($id);
+
+        // Xóa thương hiệu nếu không có sản phẩm liên quan
         Brand::delete($id);
         $_SESSION['confim'] = 'Xóa dữ liệu thành công!';
         return redirect('/admin/brands');

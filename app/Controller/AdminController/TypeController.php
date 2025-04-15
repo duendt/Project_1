@@ -57,10 +57,10 @@ class TypeController
     public function destroy($id)
     {
         $listIdProduct = Product::select('id_product')->where('id_type', '=', $id)->get();
-        foreach ($listIdProduct as $item) {
-            ProductVariant::deleteByProductId($item->id_product);
+        if(count($listIdProduct) > 0){
+            $_SESSION['error'] = 'Không thể xóa loại sản phẩm này vì nó đang được sử dụng!';
+            return redirect('/admin/types');
         }
-        Product::deleteByTypeId($id);
         ProductType::delete($id);
         $_SESSION['confim'] = 'Xóa loại sản phẩm thành công!';
         return redirect('/admin/types');

@@ -36,12 +36,6 @@
             <a href="{{ APP_URL . 'admin/storages/create'}}" class="btn btn-primary mb-3">
                 <i class="bi bi-plus-lg"></i> Thêm dung lượng
             </a>
-            @if (isset($_SESSION['confim']))
-                <div class="alert alert-success">
-                    {{ $_SESSION['confim'] }}
-                    @php unset($_SESSION['confim']); @endphp
-                </div>
-            @endif
             <div class="table-responsive">
                 <table class="table">
                     <thead>

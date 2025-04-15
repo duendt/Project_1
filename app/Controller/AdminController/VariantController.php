@@ -150,6 +150,13 @@ class VariantController
     {
         // Tìm phiên bản trước khi xóa để lấy thông tin về ảnh
         $variant = ProductVariant::find($id);
+        $orderDetails = ProductVariant::select(['order_details.*'])
+            ->where('id_prodvar','=', $id)
+            ->get();
+        if (count($orderDetails) > 0) {
+            $_SESSION['error'] = 'Không thể xóa phiên bản sản phẩm này vì nó đã được đặt hàng!';
+            return redirect('admin/variants');
+        }
         if ($variant && !empty($variant->image)) {
             $image_path = ROOT_DIR . "/public/images/" . $variant->image;
             if (file_exists($image_path)) {

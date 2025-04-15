@@ -158,11 +158,4 @@ class UserController{
         $_SESSION['message'] = 'Cập nhật thông tin người dùng thành công!';
         return redirect('/admin/users/edit/' . $id);
     }
-
-    public function destroy($id)
-    {
-        User::delete($id);
-        $_SESSION['confim'] = 'Xóa người dùng thành công!';
-        return redirect('admin/users');
-    }
 }

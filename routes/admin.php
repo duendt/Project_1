@@ -84,14 +84,12 @@ $router->group(['prefix' => 'admin', 'before' => 'admin'], function ($router) {
     $router->post('/order/delete/{id}', [OrderController::class, 'delete']);
     $router->post('/order/add-product/{id}', [OrderController::class, 'addProduct']);
     $router->post('/order/update-quantity/{id}', [OrderController::class, 'updateQuantity']);
-    $router->post('/order/remove-product/{id}', [OrderController::class, 'removeProduct']);
     // Users
     $router->get('/users', [UserController::class, 'index']);
     $router->get('/users/create', [UserController::class, 'create']);
     $router->get('/users/edit/{id}', [UserController::class, 'edit']);
     $router->post('/users/create', [UserController::class, 'store']);
     $router->post('/users/edit/{id}', [UserController::class, 'update']);
-    $router->post('/users/delete/{id}', [UserController::class, 'destroy']);
 });
 
 

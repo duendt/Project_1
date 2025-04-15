@@ -13,7 +13,9 @@ class OrderController
     public function index()
     {
         // Truy vấn lấy danh sách đơn hàng
-        $listOrders = Order::all();
+        $listOrders = Order::select(['`order`.*'])
+            ->orderBy('id_order', 'desc')
+            ->get();
         $listDetail = OrderDetail::all();
         $listVariant = ProductVariant::select(['product_variant.*', 'products.name as product_name', 'color.name as color_name', 'storage.storage'])
             ->join('products', 'products.id_product', 'product_variant.id_product')
@@ -151,25 +153,6 @@ class OrderController
             ]);
         } catch (\Exception $e) {
             return $this->jsonResponse(['success' => false, 'message' => $e->getMessage()], 500);
-        }
-    }
-    public function removeProduct($id)
-    {
-        try {
-            $detail = OrderDetail::find($id);
-            if (!$detail) {
-                $_SESSION['error'] = 'Không tìm thấy chi tiết đơn hàng';
-                return redirect('admin/order/edit/' . $detail->id_order);
-            }
-
-            $orderId = $detail->id_order;
-            OrderDetail::delete($id);
-
-            $_SESSION['message'] = 'Xóa sản phẩm thành công';
-            return redirect('admin/order/edit/' . $orderId);
-        } catch (\Exception $e) {
-            $_SESSION['error'] = 'Có lỗi xảy ra: ' . $e->getMessage();
-            return redirect('admin/order');
         }
     }
 

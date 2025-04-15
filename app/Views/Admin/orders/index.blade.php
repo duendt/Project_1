@@ -1,26 +1,6 @@
 @extends('layouts.admin')
 @section('title', 'Quản lý đơn hàng')
 @section('content')
-
-    @if (isset($_SESSION['confim']))
-    <div class="alert alert-success">
-        {{ $_SESSION['confim'] }}
-        @php unset($_SESSION['confim']); @endphp
-    </div>
-    @endif
-
-    @if (isset($_SESSION['message']))
-    <div class="alert alert-success">
-        {{ $_SESSION['message'] }}
-        @php unset($_SESSION['message']); @endphp
-    </div>
-    @endif
-    @if (isset($_SESSION['error']))
-    <div class="alert alert-danger">
-        {{ $_SESSION['error'] }}
-        @php unset($_SESSION['error']); @endphp
-    </div>
-    @endif
     <!-- Bộ lọc -->
     <div class="card mb-4">
         <div class="card-body">
@@ -118,13 +98,6 @@
                                 <a href="{{ APP_URL . 'admin/order/edit/' . $order->id_order }}" class="btn btn-primary btn-sm">
                                     <i class="bi bi-pencil-square"></i> Chỉnh sửa
                                 </a>
-                                @if ($order->status < 2)
-                                    <form action="{{ APP_URL . 'admin/order/delete/' . $order->id_order }}" method="post" class="d-inline">
-                                    <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này không?')">
-                                        <i class="bi bi-trash"></i> Xóa
-                                    </button>
-                                    </form>
-                                    @endif
                             </td>
                         </tr>
                         @endforeach

@@ -1,8 +1,10 @@
 <?php
+
 namespace App\Controller\AdminController;
 
 use App\Models\ProductConfig;
 use App\Models\ProductVariant;
+
 class ConfigController
 {
     public function index()
@@ -20,8 +22,10 @@ class ConfigController
     {
         $data = $_POST;
         // Validate data
-        if (empty($data['cpu']) || empty($data['ram']) || empty($data['screen']) || 
-            empty($data['battery']) || empty($data['camera']) || empty($data['operating_system'])) {
+        if (
+            empty($data['cpu']) || empty($data['ram']) || empty($data['screen']) ||
+            empty($data['battery']) || empty($data['camera']) || empty($data['operating_system'])
+        ) {
             $_SESSION['error'] = 'Các trường bắt buộc không được để trống!';
             return redirect('/admin/configs/create');
         } else {
@@ -42,21 +46,29 @@ class ConfigController
     {
         $data = $_POST;
         // Validate data
-        if (empty($data['cpu']) || empty($data['ram']) || empty($data['gpu']) || empty($data['screen']) || 
-            empty($data['battery']) || empty($data['hz']) || empty($data['camera']) || empty($data['operating_system'])) {
+        if (
+            empty($data['cpu']) || empty($data['ram']) || empty($data['gpu']) || empty($data['screen']) ||
+            empty($data['battery']) || empty($data['hz']) || empty($data['camera']) || empty($data['operating_system'])
+        ) {
             $_SESSION['error'] = 'Các trường bắt buộc không được để trống!';
-            return redirect('/admin/configs/edit/'.$id);
+            return redirect('/admin/configs/edit/' . $id);
         } else {
             // Update config
             ProductConfig::update($data, $id);
             $_SESSION['message'] = 'Cập nhật cấu hình thành công!';
-            return redirect('/admin/configs/edit/'.$id);
+            return redirect('/admin/configs/edit/' . $id);
         }
     }
 
     public function destroy($id)
     {
-        ProductVariant::deleteByConfigId($id);
+        $variants = ProductVariant::select(['product_variant.*'])
+            ->where('id_config', '=', $id)
+            ->get();
+        if (count($variants) > 0) {
+            $_SESSION['error'] = 'Không thể xóa cấu hình này vì nó đang được sử dụng trong các sản phẩm!';
+            return redirect('admin/configs');
+        }
         ProductConfig::delete($id);
         $_SESSION['confim'] = 'Xóa cấu hình thành công!';
         return redirect('/admin/configs');

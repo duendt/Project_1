@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +12,7 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f8f9fa;
         }
+
         .sidebar {
             min-height: 100vh;
             background-color: #212529;
@@ -18,58 +20,71 @@
             position: fixed;
             width: 250px;
         }
+
         .sidebar .nav-link {
             color: rgba(255, 255, 255, 0.75);
             padding: 0.5rem 1rem;
         }
+
         .sidebar .nav-link:hover,
         .sidebar .nav-link.active {
             color: #fff;
             background-color: rgba(255, 255, 255, 0.1);
         }
+
         .sidebar .nav-link i {
             margin-right: 10px;
         }
+
         .content {
             margin-left: 250px;
             padding: 2rem;
         }
+
         .navbar {
             background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,.08);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, .08);
         }
+
         .user-dropdown {
             cursor: pointer;
         }
+
         .table {
             background-color: #fff;
             border-radius: 5px;
-            box-shadow: 0 1px 3px rgba(0,0,0,.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
         }
+
         .card {
-            box-shadow: 0 1px 3px rgba(0,0,0,.1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
             margin-bottom: 1rem;
         }
+
         .card-header {
             font-weight: 600;
-            background-color: rgba(0,0,0,.03);
+            background-color: rgba(0, 0, 0, .03);
         }
+
         .btn-primary {
             background-color: #0d6efd;
             border-color: #0d6efd;
         }
+
         @media (max-width: 768px) {
             .sidebar {
                 width: 100%;
                 position: relative;
                 min-height: auto;
             }
+
             .content {
                 margin-left: 0;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="container-fluid">
         <div class="row">
@@ -101,11 +116,6 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ APP_URL . '/admin/carts' }}">
-                                <i class="bi bi-cart"></i> Giỏ hàng
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" href="{{ APP_URL . '/admin/vouchers' }}">
                                 <i class="bi bi-ticket-perforated"></i> Mã giảm giá
                             </a>
@@ -130,14 +140,40 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="userDropdown">
                             <li><a class="dropdown-item" href="{{ APP_URL . 'user/profile' }}"><i class="bi bi-person"></i> Hồ sơ</a></li>
-                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
                             <li><a class="dropdown-item" href="{{ APP_URL . 'logout' }}"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a></li>
                         </ul>
                     </div>
                 </div>
-                @yield('content')  
+                @if(isset($_SESSION['success']))
+                <div class="alert alert-success">
+                    {{ $_SESSION['success'] }}
+                    @php unset($_SESSION['success']); @endphp
+                </div>
+                @endif
+                @if (isset($_SESSION['confim']))
+                <div class="alert alert-success">
+                    {{ $_SESSION['confim'] }}
+                    @php unset($_SESSION['confim']); @endphp
+                </div>
+                @endif
+                @if (isset($_SESSION['message']))
+                <div class="alert alert-success">
+                    {{ $_SESSION['message'] }}
+                    @php unset($_SESSION['message']); @endphp
+                </div>
+                @endif
+                @if(isset($_SESSION['error']))
+                <div class="alert alert-danger">
+                    {{ $_SESSION['error'] }}
+                    @php unset($_SESSION['error']); @endphp
+                </div>
+                @endif
+                @yield('content')
             </div>
-            
+
         </div>
     </div>
 
@@ -145,4 +181,5 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     @yield('scripts')
 </body>
-</html> 
+
+</html>

@@ -62,6 +62,7 @@
                                 <li><a class="dropdown-item" href="{{ APP_URL . 'admin' }}">Trang quản trị</a></li>
                                 @endif
                                 <li><a class="dropdown-item" href="{{ APP_URL . 'user/profile/'. $_SESSION['user_id'] }}">Xem thông tin</a></li>
+                                <li><a class="dropdown-item" href="{{ APP_URL . 'order' }}">Đơn hàng của bạn</a></li>
                                 <li><a class="dropdown-item" href="{{ APP_URL . 'logout'}}">Đăng xuất</a></li>
                             </ul>
                         </div>

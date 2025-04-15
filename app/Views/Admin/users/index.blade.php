@@ -8,14 +8,6 @@
             <i class="bi bi-plus-lg"></i> Thêm người dùng
         </a>
     </div>
-
-    @if (isset($_SESSION['confim']))
-    <div class="alert alert-success">
-        {{ $_SESSION['confim'] }}
-        @php unset($_SESSION['confim']); @endphp
-    </div>
-    @endif
-
     <!-- Bộ lọc -->
     <div class="card mb-4">
         <div class="card-body">
@@ -79,11 +71,6 @@
                                 <a href="{{ APP_URL . 'admin/users/edit/' . $user->id_user }}" class="btn btn-warning btn-sm">
                                     <i class="bi bi-pencil"></i> Sửa
                                 </a>
-                                <form action="{{ APP_URL . 'admin/users/delete/' . $user->id_user }}" method="post" class="d-inline">
-                                    <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này không?')">
-                                        <i class="bi bi-trash"></i> Xóa
-                                    </button>
-                                </form>
                             </td>
                         </tr>
                         @endforeach

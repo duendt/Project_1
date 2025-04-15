@@ -4,7 +4,19 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Quản lý thương hiệu</h2>
     </div>
+    @if(isset($_SESSION['success']))
+    <div class="alert alert-success">
+        {{ $_SESSION['success'] }}
+        @php unset($_SESSION['success']); @endphp
+    </div>
+    @endif
 
+    @if(isset($_SESSION['error']))
+    <div class="alert alert-danger">
+        {{ $_SESSION['error'] }}
+        @php unset($_SESSION['error']); @endphp
+    </div>
+    @endif
     <!-- Tab Navigation -->
     <ul class="nav nav-tabs mb-4" id="productTabs" role="tablist">
         <li class="nav-item" role="presentation">
@@ -36,11 +48,11 @@
                 <i class="bi bi-plus-lg"></i> Thêm thương hiệu
             </a>
             @if (isset($_SESSION['confim']))
-                <div class="alert alert-success">
-                    {{ $_SESSION['confim'] }}
-                    @php unset($_SESSION['confim']); @endphp
-                </div>
-                @endif
+            <div class="alert alert-success">
+                {{ $_SESSION['confim'] }}
+                @php unset($_SESSION['confim']); @endphp
+            </div>
+            @endif
             <div class="table-responsive">
                 <table class="table">
                     <thead>

@@ -64,7 +64,13 @@ class StorageController
 
     public function destroy($id)
     {
-        ProductVariant::deleteByStorageId($id);
+        $variants = ProductVariant::select(['product_variant.*'])
+            ->where('id_storage', '=', $id)
+            ->get();
+            if(count($variants) > 0){
+                $_SESSION['error'] = 'Không thể xóa dung lượng này vì nó đang được sử dụng trong các sản phẩm!';
+                return redirect('/admin/storages');
+            }
         Storage::delete($id);
         $_SESSION['confim'] = 'Xóa dung lượng thành công!';
         return redirect('/admin/storages');

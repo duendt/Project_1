@@ -79,7 +79,13 @@ class ProductController
     }
     public function destroy($id)
     {
-        ProductVariant::deleteByProductId($id);
+        $variants = ProductVariant::select(['product_variant.*'])
+            ->where('id_product', '=', $id)
+            ->get();
+            if(count($variants) > 0){
+                $_SESSION['error'] = 'Không thể xóa sản phẩm này vì nó có các biến thể liên quan!';
+                return redirect('admin/products');
+            }
         Product::delete((int)$id);
         $_SESSION['confim'] = 'Xóa sản phẩm thành công!';
         return redirect('/admin/products');

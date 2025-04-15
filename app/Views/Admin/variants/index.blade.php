@@ -36,18 +36,6 @@
             <a href="{{ APP_URL . 'admin/variants/create'}}" class="btn btn-primary mb-3">
                 <i class="bi bi-plus-lg"></i> Thêm phiên bản
             </a>
-            @if (isset($_SESSION['confim']))
-                <div class="alert alert-success">
-                    {{ $_SESSION['confim'] }}
-                    @php unset($_SESSION['confim']); @endphp
-                </div>
-            @endif
-            @if (isset($_SESSION['message']))
-                <div class="alert alert-success">
-                    {{ $_SESSION['message'] }}
-                    @php unset($_SESSION['message']); @endphp
-                </div>
-            @endif
             <div class="table-responsive">
                 <div class="row mb-3">
                     <div class="col-md-6">
