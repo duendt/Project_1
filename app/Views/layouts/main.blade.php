@@ -30,10 +30,13 @@
                                 <i class="fas fa-list"></i> Danh mục
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="/category/dien-thoai">Điện thoại</a></li>
-                                <li><a class="dropdown-item" href="/category/laptop">Laptop</a></li>
-                                <li><a class="dropdown-item" href="/category/tablet">Máy tính bảng</a></li>
-                                <li><a class="dropdown-item" href="/category/phu-kien">Phụ kiện</a></li>
+                                    <?php
+                                        use App\Models\ProductType;
+                                        $ProductType = ProductType::all();
+                                        foreach ($ProductType as $product_type) {
+                                            echo '<li><a class="dropdown-item" href="'.APP_URL .'category/' . $product_type->id_type. '">' . $product_type->name . '</a></li>';
+                                        }
+                                    ?>
                             </ul>
                         </li>
                         <li class="nav-item">

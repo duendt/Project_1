@@ -6,6 +6,8 @@ use App\Models\Product;
 use App\Models\Brand;
 use App\Models\ProductVariant;
 use App\Models\News;
+use App\Models\ProductType;
+
 class HomeController
 {
     public function index()
@@ -56,5 +58,28 @@ class HomeController
         }
         
         return view('home.index', compact( 'featuredProducts', 'newProducts', 'newsList'));
+    }
+
+
+    public function ProductTypes($id)
+    {
+        // Lấy danh sách sản phẩm theo ProductType ID
+        $products = Product::
+            select(['products.*'])
+        ->where('id_type','=', $id)->get();
+
+        // Lấy phiên bản đầu tiên cho mỗi sản phẩm (nếu có)
+        foreach ($products as $product) {
+            $variant = ProductVariant::where('id_product', '=', $product->id_product)->first();
+
+            if ($variant) {
+                $product->price = $variant->price;
+                $product->image = $variant->image;
+                $product->id_prodvar = $variant->id_prodvar;
+            }
+        }
+
+        // Truyền danh sách sản phẩm sang view
+        return view('Type.index', compact('products'));
     }
 }

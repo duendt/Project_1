@@ -9,6 +9,12 @@ use App\Controller\Auth\AuthController;
 
 $router->get('/', [HomeController::class,'index']);
 $router->get('/san-pham/{id}', [DetailProductController::class, 'index']);
+$router->get('/category/{id}', [HomeController::class, 'ProductTypes']);
+$router->get('/lucky', function () {
+    return view('Voucher.lucky');
+    // Trả về view với danh sách sản phẩm ngẫu nhiên
+});
+
 
 // Auth routes
 $router->get('/login', [AuthController::class, 'showLoginForm']);
