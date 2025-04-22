@@ -8,6 +8,44 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="/css/style.css">
+    <style>
+        body {
+            background-image: url('{{ APP_URL . "public/images/back.jpg" }}');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            font-family: 'Roboto', sans-serif;
+        }
+        .container1 {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 20px auto; /* Center container with auto margins */
+            max-width: 1200px; /* Limit max width to match Bootstrap container */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        main {
+            min-height: 80vh;
+            padding: 20px 0; /* Add padding to main for spacing */
+        }
+        header .container, footer .container {
+            background-color: transparent;
+            box-shadow: none;
+        }
+        .alert {
+            margin: 20px auto;
+            width: 90%;
+            max-width: 1200px;
+            border-radius: 8px;
+        }
+        @media (max-width: 768px) {
+            .container1 {
+                padding: 20px;
+                margin: 15px 10px; /* Reduce margin on mobile */
+            }
+        }
+    </style>
 </head>
 @yield('styles')
 
@@ -30,13 +68,13 @@
                                 <i class="fas fa-list"></i> Danh mục
                             </a>
                             <ul class="dropdown-menu">
-                                    <?php
-                                        use App\Models\ProductType;
-                                        $ProductType = ProductType::all();
-                                        foreach ($ProductType as $product_type) {
-                                            echo '<li><a class="dropdown-item" href="'.APP_URL .'category/' . $product_type->id_type. '">' . $product_type->name . '</a></li>';
-                                        }
-                                    ?>
+                                <?php
+                                    use App\Models\ProductType;
+                                    $ProductType = ProductType::all();
+                                    foreach ($ProductType as $product_type) {
+                                        echo '<li><a class="dropdown-item" href="'.APP_URL .'category/' . $product_type->id_type. '">' . $product_type->name . '</a></li>';
+                                    }
+                                ?>
                             </ul>
                         </li>
                         <li class="nav-item">
@@ -79,6 +117,8 @@
             </div>
         </nav>
     </header>
+
+    <!-- Alerts -->
     @if(isset($_SESSION['success']))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{ $_SESSION['success'] }}
@@ -93,9 +133,10 @@
     </div>
     @php unset($_SESSION['error']); @endphp
     @endif
+
     <!-- Main Content -->
     <main class="py-4">
-        <div class="container">
+        <div class="container1">
             @yield('content')
         </div>
     </main>
@@ -136,15 +177,20 @@
                         <a href="#" class="text-white me-2"><i class="fab fa-instagram fa-2x"></i></a>
                     </div>
                     <h5 class="mt-3">Phương thức thanh toán</h5>
-                    <img src="/images/payment-methods.png" alt="Phương thức thanh toán" class="img-fluid">
+                    <div class="payment-methods d-flex flex-wrap align-items-center">
+                        <img src="{{ APP_URL . 'public/images/nh.png' }}" alt="Phương thức thanh toán 1" class="img-fluid me-2" style="max-height: 40px;">
+                        <img src="{{ APP_URL . 'public/images/nh (2).png' }}" alt="Phương thức thanh toán 2" class="img-fluid me-2" style="max-height: 40px;">
+                        <img src="{{ APP_URL . 'public/images/nh (3).png' }}" alt="Phương thức thanh toán 3" class="img-fluid me-2" style="max-height: 40px;">
+                    </div>
                 </div>
             </div>
-            <hr class="mt-4">
+            <hr class="mt-2 bg-white">
             <div class="text-center">
-                <p>&copy; 2024 TechStore. Tất cả quyền được bảo lưu.</p>
+                <p>© 2024 TechStore. Tất cả quyền được bảo lưu.</p>
             </div>
         </div>
     </footer>
+
     @yield('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
