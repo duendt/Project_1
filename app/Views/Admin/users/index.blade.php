@@ -8,38 +8,6 @@
             <i class="bi bi-plus-lg"></i> Thêm người dùng
         </a>
     </div>
-    <!-- Bộ lọc -->
-    <div class="card mb-4">
-        <div class="card-body">
-            <form class="row g-3">
-                <div class="col-md-3">
-                    <label class="form-label">Vai trò</label>
-                    <select class="form-select" name="role">
-                        <option value="">Tất cả</option>
-                        <option value="1">Admin</option>
-                        <option value="0">Người dùng</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label">Trạng thái</label>
-                    <select class="form-select" name="status">
-                        <option value="">Tất cả</option>
-                        <option value="0">Hoạt động</option>
-                        <option value="1">Bị cấm</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label">Tìm kiếm</label>
-                    <input type="text" class="form-control" name="search" placeholder="Tên, email, số điện thoại...">
-                </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Lọc</button>
-                    <button type="reset" class="btn btn-secondary">Đặt lại</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <!-- Danh sách người dùng -->
     <div class="card">
         <div class="card-body">

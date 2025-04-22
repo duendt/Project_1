@@ -37,24 +37,6 @@
                 <i class="bi bi-plus-lg"></i> Thêm phiên bản
             </a>
             <div class="table-responsive">
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <select name="id_product" class="form-select" aria-label="Chọn sản phẩm">
-                            <option value="">Chọn sản phẩm</option>
-                            @foreach ($listProduct as $product)
-                            <option value="{{ $product->id_product }}">{{ $product->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <select name="id_storage" class="form-select" aria-label="Chọn dung lượng">
-                            <option value="">Chọn dung lượng</option>
-                            @foreach ($listStorage as $storage)
-                            <option value="{{ $storage->id_storage }}">{{ $storage->storage }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
                 <table class="table">
                     <thead>
                         <tr>

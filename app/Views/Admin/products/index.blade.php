@@ -36,12 +36,6 @@
                 <a href="{{ APP_URL . 'admin/products/create'}}" class="btn btn-primary mb-3">
                     <i class="bi bi-plus-lg"></i> Thêm sản phẩm
                 </a>
-                <select name="typeProduct" id="typeProduct" class="form-select" aria-label="Default select example" style="border: 1px solid black;">
-                    <option value="">Tất cả sản phẩm</option>
-                    @foreach ($listType as $list)
-                    <option value="{{ $list->id_type }}">{{ $list->name }}</option>
-                    @endforeach
-                </select>
                 <table class="table">
                     <thead>
                         <tr>

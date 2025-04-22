@@ -1,43 +1,6 @@
 @extends('layouts.admin')
 @section('title', 'Quản lý đơn hàng')
-@section('content')
-    <!-- Bộ lọc -->
-    <div class="card mb-4">
-        <div class="card-body">
-            <form class="row g-3">
-                <div class="col-md-3">
-                    <label class="form-label">Trạng thái</label>
-                    <select class="form-select" name="status">
-                        <option value="">Tất cả</option>
-                        <option value="0">Chờ xác nhận</option>
-                        <option value="1">Đã xác nhận</option>
-                        <option value="2">Đang giao</option>
-                        <option value="3">Đã giao</option>
-                        <option value="4">Đã hủy</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label">Phương thức thanh toán</label>
-                    <select class="form-select" name="payment_method">
-                        <option value="">Tất cả</option>
-                        <option value="0">Thanh toán khi nhận hàng</option>
-                        <option value="1">Chuyển khoản ngân hàng</option>
-                        <option value="2">Thanh toán online</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label">Tìm kiếm</label>
-                    <input type="text" class="form-control" name="search" placeholder="Mã đơn, ID khách hàng...">
-                </div>
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Lọc</button>
-                    <button type="reset" class="btn btn-secondary">Đặt lại</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Danh sách đơn hàng -->
+@section('content') 
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">

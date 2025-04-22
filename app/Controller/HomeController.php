@@ -45,7 +45,7 @@ class HomeController
             }
         }
         $newsList = News::all();
-        
+
         // Check if we have news data
         if (empty($newsList)) {
             error_log('No news found in database');
@@ -56,17 +56,17 @@ class HomeController
                 error_log('First news content exists: ' . (!empty($newsList[0]->content) ? 'Yes' : 'No'));
             }
         }
-        
-        return view('home.index', compact( 'featuredProducts', 'newProducts', 'newsList'));
+
+        return view('home.index', compact('featuredProducts', 'newProducts', 'newsList'));
     }
 
 
     public function ProductTypes($id)
     {
         // Lấy danh sách sản phẩm theo ProductType ID
-        $products = Product::
-            select(['products.*'])
-        ->where('id_type','=', $id)->get();
+        $products = Product::select(['products.*'])
+            ->where('id_type', '=', $id)
+            ->get();
 
         // Lấy phiên bản đầu tiên cho mỗi sản phẩm (nếu có)
         foreach ($products as $product) {
@@ -81,5 +81,31 @@ class HomeController
 
         // Truyền danh sách sản phẩm sang view
         return view('Type.index', compact('products'));
+    }
+    public function lucky()
+    {
+        // Truyền danh sách sản phẩm sang view
+        return view('Voucher.lucky');
+    }
+    public function search()
+    {
+        $k = $_GET['k'] ?? '';
+        $products = Product::select(['products.*'])
+            ->where('name', 'LIKE', '%' . $k . '%')
+            ->orWhere('description', 'LIKE', '%' . $k . '%')
+            ->get();
+
+        // Add variant details (image, price, etc.) for each product
+        foreach ($products as $product) {
+            $variant = ProductVariant::where('id_product', '=', $product->id_product)->first();
+
+            if ($variant) {
+                $product->price = $variant->price;
+                $product->image = $variant->image;
+                $product->id_prodvar = $variant->id_prodvar;
+            }
+        }
+
+        return view('search.index', compact('products', 'k'));
     }
 }

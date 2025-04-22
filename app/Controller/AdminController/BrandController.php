@@ -60,7 +60,7 @@ class BrandController
         // Kiểm tra nếu $listProduct có dữ liệu
         if (count($listProduct) > 0) {
             $_SESSION['error'] = 'Không thể xóa thương hiệu này vì có sản phẩm liên quan!';
-            return redirect('admin/brands');
+            return redirect('/admin/brands');
         }
 
         // Xóa thương hiệu nếu không có sản phẩm liên quan

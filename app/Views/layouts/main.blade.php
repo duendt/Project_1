@@ -40,14 +40,14 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/khuyen-mai"><i class="fas fa-percentage"></i> Khuyến mãi</a>
+                            <a class="nav-link" href="{{ APP_URL . 'lucky' }}"><i class="fas fa-sync-alt fa-spin"></i> Vòng quay</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/tin-tuc"><i class="fas fa-newspaper"></i> Tin tức</a>
+                            <a class="nav-link" href="{{ APP_URL . 'news' }}"><i class="fas fa-newspaper"></i> Tin tức</a>
                         </li>
                     </ul>
-                    <form class="d-flex me-3">
-                        <input class="form-control me-2" type="search" placeholder="Tìm kiếm sản phẩm...">
+                    <form action="{{ APP_URL . 'search' }}" class="d-flex me-3">
+                        <input class="form-control me-2" name="k" type="search" placeholder="Tìm kiếm sản phẩm...">
                         <button class="btn btn-outline-light" type="submit"><i class="fas fa-search"></i></button>
                     </form>
                     <div class="d-flex">

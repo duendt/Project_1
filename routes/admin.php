@@ -12,6 +12,7 @@ use App\Controller\AdminController\ConfigController;
 use App\Controller\AdminController\StorageController;
 use App\Controller\AdminController\ColorController;
 use App\Controller\AdminController\VariantController;
+use App\Controller\AdminController\NewsController;
 
 // Kiểm tra quyền admin trước khi cho phép truy cập vào các route của admin
 $router->filter('admin', function () {
@@ -90,50 +91,11 @@ $router->group(['prefix' => 'admin', 'before' => 'admin'], function ($router) {
     $router->get('/users/edit/{id}', [UserController::class, 'edit']);
     $router->post('/users/create', [UserController::class, 'store']);
     $router->post('/users/edit/{id}', [UserController::class, 'update']);
+    // News
+    $router->get('/news', [NewsController::class, 'index']);
+    $router->get('/news/create', [NewsController::class, 'create']);
+    $router->get('/news/edit/{id}', [NewsController::class, 'edit']);
+    $router->post('/news/create', [NewsController::class, 'store']);
+    $router->post('/news/edit/{id}', [NewsController::class, 'update']);
+    $router->post('/news/delete/{id}', [NewsController::class, 'destroy']);
 });
-
-
-// // Product Variants
-// $router->get('/admin/variants', [ProductController::class, 'index']);
-// $router->post('/admin/variants', [ProductController::class, 'storeVariant']);
-// $router->put('/admin/variants/{id}', [ProductController::class, 'updateVariant']);
-// $router->delete('/admin/variants/{id}', [ProductController::class, 'destroyVariant']);
-// // Brands
-// $router->get('/admin/brands', [BrandController::class, 'index']);
-// $router->post('/admin/brands', [BrandController::class, 'storeBrand']);
-// $router->put('/admin/brands/{id}', [BrandController::class, 'updateBrand']);
-// $router->delete('/admin/brands/{id}', [BrandController::class, 'destroyBrand']);
-
-// // Product Types
-// $router->get('/admin/product-types', [TypeController::class, 'index']);
-// $router->post('/admin/product-types', [TypeController::class, 'storeType']);
-// $router->put('/admin/product-types/{id}', [TypeController::class, 'updateType']);
-// $router->delete('/admin/product-types/{id}', [TypeController::class, 'destroyType']);
-
-// // Orders
-// $router->get('/admin/orders', [OrderController::class, 'index']);
-// $router->get('/admin/orders/{id}', [OrderController::class, 'show']);
-// $router->put('/admin/orders/{id}/status', [OrderController::class, 'updateStatus']);
-
-// // Users
-// $router->get('/admin/users', [UserController::class, 'index']);
-// $router->get('/admin/users/create', [UserController::class, 'create']);
-// $router->post('/admin/users', [UserController::class, 'store']);
-// $router->get('/admin/users/{id}/edit', [UserController::class, 'edit']);
-// $router->put('/admin/users/{id}', [UserController::class, 'update']);
-// $router->delete('/admin/users/{id}', [UserController::class, 'destroy']);
-// $router->put('/admin/users/{id}/permissions', [UserController::class, 'updatePermissions']);
-
-// // Carts
-// $router->get('/admin/carts', [CartController::class, 'index']);
-// $router->get('/admin/carts/{id}', [CartController::class, 'show']);
-// $router->post('/admin/carts/{id}/convert-to-order', [CartController::class, 'convertToOrder']);
-
-// // Vouchers
-// $router->get('/admin/vouchers', [VoucherController::class, 'index']);
-// $router->get('/admin/vouchers/create', [VoucherController::class, 'create']);
-// $router->post('/admin/vouchers', [VoucherController::class, 'store']);
-// $router->get('/admin/vouchers/{id}/edit', [VoucherController::class, 'edit']);
-// $router->put('/admin/vouchers/{id}', [VoucherController::class, 'update']);
-// $router->delete('/admin/vouchers/{id}', [VoucherController::class, 'destroy']);
-// $router->get('/admin/vouchers/{id}/usage', [VoucherController::class, 'usageDetails']);
