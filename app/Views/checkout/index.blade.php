@@ -16,10 +16,10 @@
         @php unset($_SESSION['error']); @endphp
     </div>
     @endif
-    <div class="row">
-        <!-- Thông tin giao hàng -->
-        <div class="col-lg-8">
-            <form id="checkoutForm" action="{{ APP_URL . 'check-out' }}" method="POST">
+    <form id="checkoutForm" action="{{ APP_URL . 'check-out' }}" method="POST">
+        <div class="row">
+            <!-- Left Column: Shipping Info, Payment Method, Notes -->
+            <div class="col-lg-8">
                 <div class="card mb-4">
                     <div class="card-body">
                         <h5 class="card-title mb-4">Thông tin giao hàng</h5>
@@ -39,7 +39,6 @@
                     </div>
                 </div>
 
-                <!-- Phương thức thanh toán -->
                 <div class="card mb-4">
                     <div class="card-body">
                         <h5 class="card-title mb-4">Phương thức thanh toán</h5>
@@ -54,54 +53,53 @@
                     </div>
                 </div>
 
-                <!-- Ghi chú -->
                 <div class="card mb-4">
                     <div class="card-body">
                         <h5 class="card-title mb-4">Ghi chú</h5>
                         <textarea class="form-control" name="notes" rows="3" placeholder="Ghi chú về đơn hàng..."></textarea>
                     </div>
                 </div>
+            </div>
 
-                <!-- Tóm tắt đơn hàng -->
-                <div class="col-lg-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title mb-4">Đơn hàng ({{ count($checkoutItems) }} sản phẩm)</h5>
-                            <ul class="list-group mb-4">
-                                @foreach ($checkoutItems as $index => $item)
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h6 class="mb-0">{{ $item['name'] }}</h6>
-                                        <small class="text-muted">SL: {{ $item['quantity'] }} x {{ number_format($item['price'], 0, ',', '.') }}đ</small>
-                                    </div>
-                                    <span class="text-danger">{{ number_format($item['subtotal'], 0, ',', '.') }}đ</span>
-                                </li>
-                                <!-- Truyền dữ liệu sản phẩm qua form -->
-                                <input type="hidden" name="order_items[{{ $index }}][variant_id]" value="{{ $item['variant_id'] }}">
-                                <input type="hidden" name="order_items[{{ $index }}][quantity]" value="{{ $item['quantity'] }}">
-                                <input type="hidden" name="order_items[{{ $index }}][price]" value="{{ $item['price'] }}">
-                                @endforeach
-                            </ul>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span>Tạm tính</span>
-                                <span>{{ number_format($subtotal, 0, ',', '.') }}đ</span>
-                            </div>
-                            <div class="d-flex justify-content-between mb-2">
-                                <span>Phí vận chuyển</span>
-                                <span>{{ $shippingFee > 0 ? number_format($shippingFee, 0, ',', '.') . 'đ' : 'Miễn phí' }}</span>
-                            </div>
-                            <div class="d-flex justify-content-between border-top pt-2">
-                                <strong>Tổng cộng</strong>
-                                <strong class="text-danger">{{ number_format($total, 0, ',', '.') }}đ</strong>
-                            </div>
-                            <input type="hidden" name="fromCart" value="{{ $fromCart }}">
-                            <button type="submit" form="checkoutForm" class="btn btn-danger w-100 mt-3">Đặt hàng</button>
+            <!-- Right Column: Order Summary -->
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">Đơn hàng ({{ count($checkoutItems) }} sản phẩm)</h5>
+                        <ul class="list-group mb-4">
+                            @foreach ($checkoutItems as $index => $item)
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-0">{{ $item['name'] }}</h6>
+                                    <small class="text-muted">SL: {{ $item['quantity'] }} x {{ number_format($item['price'], 0, ',', '.') }}đ</small>
+                                </div>
+                                <span class="text-danger">{{ number_format($item['subtotal'], 0, ',', '.') }}đ</span>
+                            </li>
+                            <!-- Truyền dữ liệu sản phẩm qua form -->
+                            <input type="hidden" name="order_items[{{ $index }}][variant_id]" value="{{ $item['variant_id'] }}">
+                            <input type="hidden" name="order_items[{{ $index }}][quantity]" value="{{ $item['quantity'] }}">
+                            <input type="hidden" name="order_items[{{ $index }}][price]" value="{{ $item['price'] }}">
+                            @endforeach
+                        </ul>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Tạm tính</span>
+                            <span>{{ number_format($subtotal, 0, ',', '.') }}đ</span>
                         </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Phí vận chuyển</span>
+                            <span>{{ $shippingFee > 0 ? number_format($shippingFee, 0, ',', '.') . 'đ' : 'Miễn phí' }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between border-top pt-2">
+                            <strong>Tổng cộng</strong>
+                            <strong class="text-danger">{{ number_format($total, 0, ',', '.') }}đ</strong>
+                        </div>
+                        <input type="hidden" name="fromCart" value="{{ $fromCart }}">
+                        <button type="submit" class="btn btn-danger w-100 mt-3">Đặt hàng</button>
                     </div>
                 </div>
-            </form>
+            </div>
         </div>
-    </div>
+    </form>
 </div>
 @endsection
 @section('scripts')

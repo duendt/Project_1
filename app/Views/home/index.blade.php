@@ -434,9 +434,7 @@
 <!-- Promotion Banner -->
 <section class="promotion-banner mb-5">
     <div class="container">
-<<<<<<< HEAD
         <img src="{{ APP_URL . 'public/images/banner_giaiphong.webp' }}" alt="" class="img-fluid">
-=======
         <h2 class="section-title">Khuyến mãi đặc biệt</h2>
         <div class="row">
             <div class="col-md-6 mb-4">
@@ -464,7 +462,6 @@
                 </div>
             </div>
         </div>
->>>>>>> 6e3ebaba2c0405f5fde5355707acb99093a8699e
     </div>
 </section>
 
