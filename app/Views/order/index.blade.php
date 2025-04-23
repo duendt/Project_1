@@ -26,6 +26,7 @@
                     <th>ID đơn</th>
                     <th>Người nhận</th>
                     <th>Tổng tiền</th>
+                    <th>Phương thức thanh toán</th>
                     <th>Trạng thái</th>
                     <th>Thao tác</th>
                 </tr>
@@ -34,22 +35,26 @@
                 @foreach ($orders as $order)
                 @php
                 $statusClasses = [
-                    0 => 'badge bg-warning',
-                    1 => 'badge bg-info',
-                    2 => 'badge bg-primary',
-                    3 => 'badge bg-success',
-                    4 => 'badge bg-danger'
+                0 => 'badge bg-warning',
+                1 => 'badge bg-info',
+                2 => 'badge bg-primary',
+                3 => 'badge bg-success',
+                4 => 'badge bg-danger'
                 ];
                 $statusTexts = [
-                    0 => 'Chờ xác nhận',
-                    1 => 'Đã xác nhận',
-                    2 => 'Đang giao',
-                    3 => 'Đã giao',
-                    4 => 'Đã hủy'
+                0 => 'Chờ xác nhận',
+                1 => 'Đã xác nhận',
+                2 => 'Đang giao',
+                3 => 'Đã giao',
+                4 => 'Đã hủy'
+                ];
+                $paymentMethods = [
+                0 => 'Thanh toán khi nhận hàng (COD)',
+                1 => 'Chuyển khoản ngân hàng'
                 ];
                 $total = 0;
                 foreach ($order->details as $detail) {
-                    $total += $detail->price * $detail->quantity;
+                $total += $detail->price * $detail->quantity;
                 }
                 @endphp
                 <tr>
@@ -57,12 +62,20 @@
                     <td>{{ $order->buyer_name }}</td>
                     <td>{{ number_format($total) }} VNĐ</td>
                     <td>
+                        {{ $paymentMethods[$order->pay_method] ?? 'Không xác định' }}
+                    </td>
+                    <td>
                         <span class="{{ $statusClasses[$order->status] }}">{{ $statusTexts[$order->status] }}</span>
                     </td>
                     <td>
                         <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#orderDetailModal{{ $order->id_order }}">
-                            <i class="bi bi-eye"></i> Xem chi tiết
+                            <i class="bi bi-eye"></i> Chi tiết
                         </button>
+                        @if ($order->pay_method == 1 && $order->status == 0)
+                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#paymentModal{{ $order->id_order }}">
+                            <i class="bi bi-credit-card"></i> Thanh toán
+                        </button>
+                        @endif
                     </td>
                 </tr>
                 @endforeach
@@ -91,8 +104,8 @@
                     <p><strong>Phương thức thanh toán:</strong>
                         @php
                         $paymentMethods = [
-                            0 => 'Thanh toán khi nhận hàng (COD)',
-                            1 => 'Chuyển khoản ngân hàng'
+                        0 => 'Thanh toán khi nhận hàng (COD)',
+                        1 => 'Chuyển khoản ngân hàng'
                         ];
                         @endphp
                         {{ $paymentMethods[$order->pay_method] ?? 'Không xác định' }}
@@ -138,6 +151,27 @@
             </div>
         </div>
     </div>
+
+    @if ($order->pay_method == 1 && $order->status == 0)
+    <div class="modal fade" id="paymentModal{{ $order->id_order }}" tabindex="-1" aria-labelledby="paymentModalLabel{{ $order->id_order }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="paymentModalLabel{{ $order->id_order }}">Thanh toán đơn hàng #{{ $order->id_order }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="text-danger">Vui lòng quét mã QR để thanh toán đơn hàng.</p>
+                    <img src="{{ APP_URL . 'public/images/qr_code.jpg' }}" alt="QR Code" class="img-fluid mb-3" style="max-width: 300px;">
+                    <p class="text-muted">Khi thanh toán xong, vui lòng đợi 10-15 phút để admin xét duyệt.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
     @endforeach
 </div>
 @endsection

@@ -48,12 +48,18 @@ class ProductController
         if (empty($data['name']) || empty($data['warranty']) || empty($data['description'])) {
             $_SESSION['error'] = 'Các trường không được để trống!';
             return redirect('/admin/products/create');
-        } else {
-            // Update product
-            Product::create($data);
-            $_SESSION['message'] = 'Cập nhật dữ liệu thành công!';
+        }
+        $dataCheck = Product::select(['products.*'])
+            ->where('name', '=', $data['name'])
+            ->get();
+        if (count($dataCheck) > 0) {
+            $_SESSION['error'] = 'Tên sản phẩm đã tồn tại!';
             return redirect('/admin/products/create');
         }
+
+        Product::create($data);
+        $_SESSION['message'] = 'Thêm sản phẩm thành công!';
+        return redirect('/admin/products/create');
     }
 
     public function edit($id)
@@ -70,22 +76,28 @@ class ProductController
         if (empty($data['name']) || empty($data['id_brand']) || empty($data['description'])) {
             $_SESSION['error'] = 'Các trường không được để trống!';
             return redirect('/admin/products/edit/' . $id);
-        } else {
-            // Update product
-            Product::update($data, $id);
-            $_SESSION['message'] = 'Cập nhật dữ liệu thành công!';
+        }
+        $dataCheck = Product::select(['products.*'])
+            ->where('name', '=', $data['name'])
+            ->get();
+        if (count($dataCheck) > 0) {
+            $_SESSION['error'] = 'Tên sản phẩm đã tồn tại!';
             return redirect('/admin/products/edit/' . $id);
         }
+
+        Product::update($data, $id);
+        $_SESSION['message'] = 'Cập nhật dữ liệu thành công!';
+        return redirect('/admin/products/edit/' . $id);
     }
     public function destroy($id)
     {
         $variants = ProductVariant::select(['product_variant.*'])
             ->where('id_product', '=', $id)
             ->get();
-            if(count($variants) > 0){
-                $_SESSION['error'] = 'Không thể xóa sản phẩm này vì nó có các biến thể liên quan!';
-                return redirect('admin/products');
-            }
+        if (count($variants) > 0) {
+            $_SESSION['error'] = 'Không thể xóa sản phẩm này vì nó có các biến thể liên quan!';
+            return redirect('admin/products');
+        }
         Product::delete((int)$id);
         $_SESSION['confim'] = 'Xóa sản phẩm thành công!';
         return redirect('/admin/products');

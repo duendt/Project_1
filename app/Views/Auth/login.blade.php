@@ -40,7 +40,7 @@
                     </form>
                     
                     <div class="mt-4 text-center">
-                        <p>Chưa có tài khoản? <a href="{{ APP_URL . 'regsiter' }}" class="text-primary">Đăng ký ngay</a></p>
+                        <p>Chưa có tài khoản? <a href="{{ APP_URL . 'register' }}" class="text-primary">Đăng ký ngay</a></p>
                     </div>
                 </div>
             </div>

@@ -84,8 +84,38 @@ class HomeController
     }
     public function lucky()
     {
-        // Truyền danh sách sản phẩm sang view
-        return view('Voucher.lucky');
+        $voucherDir = 'public/images/vouchers/';
+        
+        // Danh sách các voucher cho phép
+        $allowedVouchers = [
+            '100K.png',
+            '200K.png'
+        ];
+        
+        // Danh sách các phông bạt
+        $backgroundOptions = [
+            '100Present.png',
+            '20Present.png',
+            '30Present.png',
+            '1TR.png',
+            '50Present.png',
+            '60Present.png',
+            '500k.png',
+            '80Present.png',
+            '90Present.png'
+        ];
+        
+        // Tạo mảng phông bạt (9 phần tử) bằng cách random từ backgroundOptions
+        $backgroundImages = [];
+        for ($i = 0; $i < 9; $i++) {
+            $randomIndex = array_rand($backgroundOptions);
+            $backgroundImages[] = $backgroundOptions[$randomIndex]; // Chỉ lưu tên file, không thêm đường dẫn
+        }
+
+        // Random 1 voucher cho người dùng từ danh sách cho phép
+        $userVoucher = $allowedVouchers[array_rand($allowedVouchers)]; // Chỉ lưu tên file, không thêm đường dẫn
+
+        return view('Voucher.lucky', compact('backgroundImages', 'userVoucher'));
     }
     public function search()
     {

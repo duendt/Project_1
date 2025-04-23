@@ -12,6 +12,7 @@
                             <th>Tên người nhận</th>
                             <th>Tổng tiền</th>
                             <th>Phương thức thanh toán</th>
+                            <th>Ngày tạo</th>
                             <th>Trạng thái</th>
                             <th>Thao tác</th>
                         </tr>
@@ -50,6 +51,7 @@
                             <td>{{ $order->buyer_name }}</td>
                             <td>{{ number_format($total) }} VNĐ</td>
                             <td>{{ $paymentMethods[$order->pay_method] }}</td>
+                            <td>{{ $order->created_at }}</td>
                             <td>
                                 <span class="{{ $statusClasses[$order->status] }}">{{ $statusTexts[$order->status] }}</span>
                             </td>
@@ -118,6 +120,7 @@
                             <h6 class="mb-3">Thông tin đơn hàng</h6>
                             <p><strong>Trạng thái:</strong> <span class="{{ $statusClasses[$order->status] }} px-2">{{ $statusTexts[$order->status] }}</span></p>
                             <p><strong>Phương thức thanh toán:</strong> {{ $paymentMethods[$order->pay_method] }}</p>
+                            <p><strong>Ngày tạo:</strong> {{ $order->created_at }}</p>
                             <p><strong>Tổng tiền:</strong> {{ number_format($total) }} VNĐ</p>
                         </div>
                     </div>

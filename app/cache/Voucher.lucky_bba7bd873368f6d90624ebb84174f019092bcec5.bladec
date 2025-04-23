@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="vi">
-
-<head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Lucky Box</title>
- <style>
- body {
+<?php $_shouldextend[1]=1; ?>
+<?php $this->startSection('title', 'Lucky Box'); ?>
+<?php $this->startSection('styles'); ?>
+<style>
+ .lucky-body {
  display: flex;
  justify-content: center;
  align-items: center;
@@ -16,7 +12,7 @@
  font-family: Arial, sans-serif;
  }
 
- .wrapper {
+ .lucky-wrapper {
  display: flex;
  flex-direction: column;
  align-items: center;
@@ -26,7 +22,7 @@
  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
  }
 
- .title {
+ .lucky-title {
  font-size: 32px;
  font-weight: bold;
  color: #333;
@@ -35,13 +31,13 @@
  letter-spacing: 2px;
  }
 
- .spin-counter {
+ .lucky-spin-counter {
  font-size: 18px;
  color: #333;
  margin-bottom: 10px;
  }
 
- .container {
+ .lucky-container {
  display: grid;
  grid-template-columns: repeat(3, 1fr);
  gap: 20px;
@@ -76,7 +72,7 @@
  transform: none;
  }
 
- .box-content {
+ .lucky-box-content {
  display: none;
  max-width: 90%;
  max-height: 90%;
@@ -84,12 +80,12 @@
  border-radius: 5px;
  }
 
- .lucky-box.opened .box-content {
+ .lucky-box.opened .lucky-box-content {
  display: block;
  animation: fadeIn 0.5s ease-in;
  }
 
- .lid {
+ .lucky-lid {
  position: absolute;
  top: 0;
  left: 0;
@@ -101,11 +97,11 @@
  transition: transform 0.5s ease;
  }
 
- .lucky-box.opened .lid {
+ .lucky-box.opened .lucky-lid {
  transform: rotateX(-180deg);
  }
 
- #result {
+ .lucky-result {
  margin-top: 20px;
  font-size: 18px;
  font-weight: bold;
@@ -113,7 +109,7 @@
  text-align: center;
  }
 
- #voucher-btn {
+ .lucky-voucher-btn {
  display: none;
  margin-top: 10px;
  padding: 10px 20px;
@@ -128,7 +124,7 @@
  transition: background-color 0.3s;
  }
 
- #voucher-btn:hover {
+ .lucky-voucher-btn:hover {
  background-color: #555;
  }
 
@@ -143,73 +139,39 @@
  transform: scale(1);
  }
  }
- </style>
-</head>
+</style>
+<?php $this->stopSection(); ?>
+<?php $this->startSection('content'); ?>
+<div class="lucky-body">
+ <div class="lucky-wrapper">
+ <div class="lucky-title">Voucher May Mắn</div>
+ <div class="lucky-spin-counter" id="spin-counter">Bạn còn 3 lần quay</div>
+ <div class="lucky-container">
+ <?php for($i = 0; $i < 9; $i++): ?>
+ <div class="lucky-box" data-index="<?php echo \htmlentities($i??'', ENT_QUOTES, 'UTF-8', false); ?>" onclick="openBox(this)">
+ <div class="lucky-lid"></div>
+ <img src="<?php echo \htmlentities(APP_URL??'', ENT_QUOTES, 'UTF-8', false); ?>public/images/vouchers/<?php echo \htmlentities($backgroundImages[$i]??'', ENT_QUOTES, 'UTF-8', false); ?>" 
+ alt="Voucher <?php echo \htmlentities($i + 1??'', ENT_QUOTES, 'UTF-8', false); ?>" 
+ class="lucky-box-content" 
+ style="display: none;">
+ </div>
+ <?php endfor; ?>
+ </div>
+ <div class="lucky-result" id="result"></div>
+ <a class="lucky-voucher-btn" id="voucher-btn" href="#">Nhận Voucher</a>
+ </div>
+</div>
+<?php $this->stopSection(); ?>
 
-<body>
- <div class="wrapper">
- <div class="title">Voucher May Mắn</div>
- <div class="spin-counter" id="spin-counter">Bạn còn 3 lần quay</div>
- <div class="container">
- <div class="lucky-box" data-index="1" onclick="openBox(this)">
- <div class="lid"></div>
- </div>
- <div class="lucky-box" data-index="2" onclick="openBox(this)">
- <div class="lid"></div>
- </div>
- <div class="lucky-box" data-index="3" onclick="openBox(this)">
- <div class="lid"></div>
- </div>
- <div class="lucky-box" data-index="4" onclick="openBox(this)">
- <div class="lid"></div>
- </div>
- <div class="lucky-box" data-index="5" onclick="openBox(this)">
- <div class="lid"></div>
- </div>
- <div class="lucky-box" data-index="6" onclick="openBox(this)">
- <div class="lid"></div>
- </div>
- <div class="lucky-box" data-index="7" onclick="openBox(this)">
- <div class="lid"></div>
- </div>
- <div class="lucky-box" data-index="8" onclick="openBox(this)">
- <div class="lid"></div>
- </div>
- <div class="lucky-box" data-index="9" onclick="openBox(this)">
- <div class="lid"></div>
- </div>
- </div>
- <div id="result"></div>
- <a id="voucher-btn" href="#">Nhận Voucher</a>
- </div>
- <?php 
- $app_url = APP_URL;
- ?>
- <script>
- const APP_URL = '<?php echo $app_url; ?>'; // Giả lập hằng số APP_URL, thay bằng giá trị thực tế
+<?php $this->startSection('scripts'); ?>
+<script>
+ const APP_URL = '<?php echo \htmlentities(APP_URL??'', ENT_QUOTES, 'UTF-8', false); ?>';
+ 
+ // Dữ liệu từ controller
+ const backgroundImages = <?php echo json_encode($backgroundImages); ?>;
+ const userVoucher = '<?php echo $userVoucher; ?>';
 
- // 8 item cố định
- const fixedItems = [
- { name: 'Gift1', image: `${APP_URL}public/images/vouchers/1TR.png` },
- { name: 'Gift2', image: `${APP_URL}public/images/vouchers/1TR.png` },
- { name: 'Gift3', image: `${APP_URL}public/images/vouchers/1TR.png` },
- { name: 'Gift4', image: `${APP_URL}public/images/vouchers/1TR.png` },
- { name: 'Gift5', image: `${APP_URL}public/images/vouchers/1TR.png` },
- { name: 'Gift6', image: `${APP_URL}public/images/vouchers/1TR.png` },
- { name: 'Gift7', image: `${APP_URL}public/images/vouchers/1TR.png` },
- { name: 'Gift8', image: `${APP_URL}public/images/vouchers/1TR.png` }
- ];
-
- // Tạo item random
- const randomItem = {
- name: 'SpecialGift',
- image: `${APP_URL}public/images/vouchers/100K.png`
- };
-
- // Mảng items: randomItem ở vị trí 0, sau đó là 8 fixedItems
- let items = [randomItem, ...fixedItems];
-
- let spinsLeft = 3; // Số lần quay còn lại
+ let spinsLeft = 3;
  let isFirstBoxOpened = false;
 
  function updateSpinCounter() {
@@ -229,41 +191,32 @@
  spinsLeft--;
  updateSpinCounter();
 
- const boxIndex = parseInt(box.getAttribute('data-index')); // Ô được chọn (1-9)
- const arrayIndex = boxIndex - 1; // Chỉ số trong mảng items (0-8)
-
- // Hoán đổi item tại vị trí 0 với item tại vị trí được chọn
- [items[0], items[arrayIndex]] = [items[arrayIndex], items[0]];
-
- // Mở ô được chọn
+ const boxIndex = parseInt(box.getAttribute('data-index'));
+ 
+ // Mở ô được chọn và hiển thị voucher người dùng nhận được
  box.classList.add('opened');
- const img = document.createElement('img');
- img.classList.add('box-content');
- img.src = items[arrayIndex].image; // Hình ảnh của ô được chọn (sau khi hoán đổi)
- box.appendChild(img);
+ const img = box.querySelector('.lucky-box-content');
+ img.src = `${APP_URL}public/images/vouchers/${userVoucher}`;
+ img.style.display = 'block';
 
- // Hiển thị text "Bạn nhận được - số ô"
+ // Hiển thị kết quả
  const result = document.getElementById('result');
- result.textContent = `Bạn nhận được - Ô ${randomItem.name}`;
+ result.textContent = `Bạn nhận được Voucher ${userVoucher.replace('.png', '')}`;
 
- // Tạo href cho button
+ // Cập nhật link nhận voucher
  const voucherBtn = document.getElementById('voucher-btn');
- voucherBtn.href = `${APP_URL}voucher/${items[arrayIndex].name}`;
+ voucherBtn.href = `${APP_URL}voucher/${userVoucher.replace('.png', '')}`;
  voucherBtn.style.display = 'block';
 
- // Mở tất cả các ô còn lại sau 600ms
+ // Mở các ô còn lại sau 600ms
  setTimeout(() => {
  const allBoxes = document.querySelectorAll('.lucky-box:not(.opened)');
  allBoxes.forEach((otherBox) => {
  otherBox.classList.add('opened');
- const otherIndex = parseInt(otherBox.getAttribute('data-index')) - 1;
- const otherImg = document.createElement('img');
- otherImg.classList.add('box-content');
- otherImg.src = items[otherIndex].image;
- otherBox.appendChild(otherImg);
+ const otherImg = otherBox.querySelector('.lucky-box-content');
+ otherImg.style.display = 'block';
  });
 
- // Nếu hết lần quay, vô hiệu hóa các box
  if (spinsLeft <= 0) {
  const allBoxes = document.querySelectorAll('.lucky-box');
  allBoxes.forEach((b) => {
@@ -273,7 +226,6 @@
  }
  }, 600);
  }
- </script>
-</body>
-
-</html>
+</script>
+<?php $this->stopSection(); ?>
+<?php if (isset($_shouldextend[1])) { echo $this->runChild('layouts.main'); } ?>

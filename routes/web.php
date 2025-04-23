@@ -5,6 +5,7 @@ use App\Controller\DetailProductController;
 use App\Controller\ClientController\CartController;
 use App\Controller\ClientController\CheckoutController;
 use App\Controller\ClientController\OrderController;
+use App\Controller\ClientController\UserController;
 use App\Controller\Auth\AuthController;
 use App\Controller\NewsController;
 // Trang chủ
@@ -34,6 +35,12 @@ $router->filter('auth', function () {
         return redirect('login');
     }
 });
+// Thông tin tài khoản
+$router->group(['prefix' => 'user', 'before' => 'auth'], function ($router) {
+    $router->get('/profile', [UserController::class, 'index']);
+    $router->post('/update', [UserController::class, 'update']);
+    $router->post('/change-password', [UserController::class, 'changePassword']);
+});
 // Lucky
 $router->group(['prefix' => 'lucky', 'before' => 'auth'], function ($router) {
     $router->get('/', [HomeController::class, 'lucky']);
@@ -43,7 +50,8 @@ $router->group(['prefix' => 'cart', 'before' => 'auth'], function ($router) {
     $router->get('/', [CartController::class, 'index']);
     $router->post('/add', [CartController::class, 'add']);
     $router->post('/update', [CartController::class, 'update']);
-    $router->post('/remove', [CartController::class, 'remove']);
+    $router->post('/update-quantity', [CartController::class, 'updateQuantity']);
+    $router->post('/remove', [CartController::class, 'removeItem']);
     $router->post('/clear', [CartController::class, 'clear']);
 });
 
@@ -57,3 +65,5 @@ $router->group(['before' => 'auth'], function ($router) {
 $router->group(['prefix' => 'order', 'before' => 'auth'], function ($router) {
     $router->get('/', [OrderController::class, 'index']);
 });
+
+// User update route

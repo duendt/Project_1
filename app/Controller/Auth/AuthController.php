@@ -59,89 +59,67 @@ class AuthController
         return redirect('login');
     }
 
-    /**
-     * Show the registration form
-     */
     public function showRegisterForm()
     {
         // Kiểm tra nếu người dùng đã đăng nhập
         if (isset($_SESSION['user_id'])) {
             return redirect('');
         }
-
-        return view('auth.register');
+        return view('Auth.register');
     }
 
-    /**
-     * Handle registration request
-     */
     public function register()
     {
         $name = $_POST['name'] ?? '';
         $email = $_POST['email'] ?? '';
         $phone = $_POST['phone'] ?? '';
+        $address = $_POST['address'] ?? '';
         $password = $_POST['password'] ?? '';
         $password_confirmation = $_POST['password_confirmation'] ?? '';
 
         // Validate input
-        if (empty($name) || empty($email) || empty($phone) || empty($password)) {
+        if (empty($name) || empty($email) || empty($phone) || empty($address) || empty($password) || empty($password_confirmation)) {
             $_SESSION['error'] = 'Vui lòng nhập đầy đủ thông tin!';
-            return redirect('/dang-ky');
+            return redirect('register');
         }
 
-        // Validate email
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $_SESSION['error'] = 'Email không hợp lệ!';
-            return redirect('/dang-ky');
+            return redirect('register');
         }
 
-        // Validate phone
-        if (!preg_match('/^[0-9]{10,11}$/', $phone)) {
-            $_SESSION['error'] = 'Số điện thoại không hợp lệ!';
-            return redirect('/dang-ky');
-        }
-
-        // Check if passwords match
         if ($password !== $password_confirmation) {
             $_SESSION['error'] = 'Mật khẩu xác nhận không khớp!';
-            return redirect('/dang-ky');
+            return redirect('register');
         }
 
-        // Check if email already exists
-        if (User::where('email', '=', $email)->exists()) {
-            $_SESSION['error'] = 'Email đã được sử dụng!';
-            return redirect('/dang-ky');
+        if (strlen($password) < 6) {
+            $_SESSION['error'] = 'Mật khẩu phải có ít nhất 6 ký tự!';
+            return redirect('register');
         }
 
-        // Check if phone already exists
-        if (User::where('phone', '=', $phone)->exists()) {
-            $_SESSION['error'] = 'Số điện thoại đã được sử dụng!';
-            return redirect('/dang-ky');
-        }
+        // Check if email or phone already exists
+        $existingUser = User::where('email', '=', $email)
+            ->orWhere('phone', '=', $phone)
+            ->first();
 
-        // Hash password
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        if ($existingUser) {
+            $_SESSION['error'] = 'Email hoặc số điện thoại đã được sử dụng!';
+            return redirect('register');
+        }
 
         // Create user
-        $userData = [
+        User::create([
             'name' => $name,
             'email' => $email,
             'phone' => $phone,
-            'password' => $hashedPassword,
-            'role' => 'customer', // Default role
-            'created_at' => date('Y-m-d H:i:s')
-        ];
+            'address' => $address,
+            'password' => md5($password), // Hash password
+            'role' => 0, // Default role for regular users
+        ]);
 
-        $userId = User::create($userData);
-
-        if ($userId) {
-            // Set flash message
-            $_SESSION['success'] = 'Đăng ký thành công! Vui lòng đăng nhập.';
-            return redirect('/dang-nhap');
-        } else {
-            $_SESSION['error'] = 'Đăng ký thất bại! Vui lòng thử lại sau.';
-            return redirect('/dang-ky');
-        }
+        $_SESSION['success'] = 'Đăng ký thành công! Vui lòng đăng nhập.';
+        return redirect('login');
     }
 
     public function logout()

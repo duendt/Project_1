@@ -46,7 +46,17 @@ class VariantController
         if (empty($data['id_product']) || empty($data['id_color']) || empty($data['id_storage']) || 
             empty($data['id_config']) || empty($data['price']) || empty($data['quantity'])) {
             $_SESSION['error'] = 'Vui lòng điền đầy đủ thông tin!';
-            return redirect('/admin/variants/create');
+            return redirect('admin/variants/create');
+        }
+        $dataCheck = ProductVariant::select(['product_variant.*'])
+            ->where('id_product', '=', $data['id_product'])
+            ->where('id_color', '=', $data['id_color'])
+            ->where('id_storage', '=', $data['id_storage'])
+            ->where('id_config', '=', $data['id_config'])
+            ->get();
+        if (count($dataCheck) > 0) {
+            $_SESSION['error'] = 'Phiên bản sản phẩm đã tồn tại!';
+            return redirect('admin/variants/create');
         }
         
         // Xử lý upload ảnh
@@ -60,7 +70,7 @@ class VariantController
             $allowed_types = array('jpg', 'jpeg', 'png', 'gif');
             if(!in_array(strtolower($file_extension), $allowed_types)) {
                 $_SESSION['error'] = 'Chỉ chấp nhận file ảnh (JPG, JPEG, PNG, GIF)!';
-                return redirect('/admin/variants/create');
+                return redirect('admin/variants/create');
             }
             
             // Upload file
@@ -68,17 +78,17 @@ class VariantController
                 $data['image'] = $new_filename;
             } else {
                 $_SESSION['error'] = 'Không thể upload ảnh!';
-                return redirect('/admin/variants/create');
+                return redirect('admin/variants/create');
             }
         } else {
             $_SESSION['error'] = 'Vui lòng chọn ảnh cho phiên bản sản phẩm!';
-            return redirect('/admin/variants/create');
+            return redirect('admin/variants/create');
         }
         
         // Create variant
         ProductVariant::create($data);
         $_SESSION['message'] = 'Thêm phiên bản sản phẩm thành công!';
-        return redirect('/admin/variants');
+        return redirect('admin/variants');
     }
 
     public function edit($id) 
@@ -86,7 +96,7 @@ class VariantController
         $variant = ProductVariant::find($id);
         if (!$variant) {
             $_SESSION['error'] = 'Không tìm thấy phiên bản sản phẩm!';
-            return redirect('/admin/variants');
+            return redirect('admin/variants');
         }
         
         $listProduct = Product::all();
@@ -105,7 +115,17 @@ class VariantController
         if (empty($data['id_product']) || empty($data['id_color']) || empty($data['id_storage']) || 
             empty($data['id_config']) || empty($data['price']) || empty($data['quantity'])) {
             $_SESSION['error'] = 'Vui lòng điền đầy đủ thông tin!';
-            return redirect('/admin/variants/edit/' . $id);
+            return redirect('admin/variants/edit/' . $id);
+        }
+        $dataCheck = ProductVariant::select(['product_variant.*'])
+            ->where('id_product', '=', $data['id_product'])
+            ->where('id_color', '=', $data['id_color'])
+            ->where('id_storage', '=', $data['id_storage'])
+            ->where('id_config', '=', $data['id_config'])
+            ->get();
+        if (count($dataCheck) > 0) {
+            $_SESSION['error'] = 'Phiên bản sản phẩm đã tồn tại!';
+            return redirect('admin/variants/edit/' . $id);
         }
         
         // Xử lý upload ảnh nếu có
@@ -119,7 +139,7 @@ class VariantController
             $allowed_types = array('jpg', 'jpeg', 'png', 'gif');
             if(!in_array(strtolower($file_extension), $allowed_types)) {
                 $_SESSION['error'] = 'Chỉ chấp nhận file ảnh (JPG, JPEG, PNG, GIF)!';
-                return redirect('/admin/variants/edit/' . $id);
+                return redirect('admin/variants/edit/' . $id);
             }
             
             // Upload file
@@ -136,14 +156,14 @@ class VariantController
                 }
             } else {
                 $_SESSION['error'] = 'Không thể upload ảnh!';
-                return redirect('/admin/variants/edit/' . $id);
+                return redirect('admin/variants/edit/' . $id);
             }
         }
         
         // Update variant
         ProductVariant::update($data, $id);
         $_SESSION['message'] = 'Cập nhật phiên bản sản phẩm thành công!';
-        return redirect('/admin/variants/edit/' . $id);
+        return redirect('admin/variants/edit/' . $id);
     }
 
     public function destroy($id) 
@@ -167,6 +187,6 @@ class VariantController
         // Xóa bản ghi
         ProductVariant::delete($id);
         $_SESSION['confim'] = 'Xóa phiên bản sản phẩm thành công!';
-        return redirect('/admin/variants');
+        return redirect('admin/variants');
     }
 }

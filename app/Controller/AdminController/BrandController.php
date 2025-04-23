@@ -5,6 +5,7 @@ namespace App\Controller\AdminController;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\ProductVariant;
+
 class BrandController
 {
 
@@ -25,32 +26,45 @@ class BrandController
         if (empty($data['name']) || empty($data['description'])) {
             $_SESSION['error'] = 'Các trường không được để trống!';
             return redirect('/admin/brands/create');
-        } else {
-            // Update product
-            Brand::create($data);
-            $_SESSION['message'] = 'Thêm dữ liệu thành công!';
+        }
+        $dataCheck = Brand::select(['brand.*'])
+            ->where('name', '=', $data['name'])
+            ->get();
+        if (count($dataCheck) > 0) {
+            $_SESSION['error'] = 'Tên thương hiệu đã tồn tại!';
             return redirect('/admin/brands/create');
         }
+
+        Brand::create($data);
+        $_SESSION['message'] = 'Thêm dữ liệu thành công!';
+        return redirect('/admin/brands/create');
     }
 
     public function edit($id)
     {
         $brand = Brand::find($id);
-        return view('Admin.brands.editbrand',compact(var_name: 'brand'));
+        return view('Admin.brands.editbrand', compact(var_name: 'brand'));
     }
 
-    public function update($id) {
+    public function update($id)
+    {
         $data = $_POST;
         // Validate data
         if (empty($data['name']) || empty($data['description'])) {
             $_SESSION['error'] = 'Các trường không được để trống!';
-            return redirect('/admin/brands/edit/'.$id);
-        } else {
-            // Update product
-            Brand::update($data, $id);
-            $_SESSION['message'] = 'Cập nhật dữ liệu thành công!';
-            return redirect('/admin/brands/edit/'.$id);
+            return redirect('/admin/brands/edit/' . $id);
         }
+        $dataCheck = Brand::select(['brand.*'])
+            ->where('name', '=', $data['name'])
+            ->get();
+        if (count($dataCheck) > 0) {
+            $_SESSION['error'] = 'Tên thương hiệu đã tồn tại!';
+            return redirect('/admin/brands/edit/' . $id);
+        }
+
+        Brand::update($data, $id);
+        $_SESSION['message'] = 'Cập nhật dữ liệu thành công!';
+        return redirect('/admin/brands/edit/' . $id);
     }
 
     public function destroy($id)

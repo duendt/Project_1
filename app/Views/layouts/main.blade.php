@@ -17,37 +17,47 @@
             background-repeat: no-repeat;
             font-family: 'Roboto', sans-serif;
         }
+
         .container1 {
             background-color: rgba(255, 255, 255, 0.95);
             border-radius: 12px;
             padding: 30px;
-            margin: 20px auto; /* Center container with auto margins */
-            max-width: 1200px; /* Limit max width to match Bootstrap container */
+            margin: 20px auto;
+            /* Center container with auto margins */
+            max-width: 1200px;
+            /* Limit max width to match Bootstrap container */
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
+
         main {
             min-height: 80vh;
-            padding: 20px 0; /* Add padding to main for spacing */
+            padding: 20px 0;
+            /* Add padding to main for spacing */
         }
-        header .container, footer .container {
+
+        header .container,
+        footer .container {
             background-color: transparent;
             box-shadow: none;
         }
+
         .alert {
             margin: 20px auto;
             width: 90%;
             max-width: 1200px;
             border-radius: 8px;
         }
+
         @media (max-width: 768px) {
             .container1 {
                 padding: 20px;
-                margin: 15px 10px; /* Reduce margin on mobile */
+                margin: 15px 10px;
+                /* Reduce margin on mobile */
             }
         }
     </style>
+    @yield('styles')
 </head>
-@yield('styles')
 
 <body>
     <!-- Header -->
@@ -68,13 +78,15 @@
                                 <i class="fas fa-list"></i> Danh mục
                             </a>
                             <ul class="dropdown-menu">
-                                <?php
-                                    use App\Models\ProductType;
-                                    $ProductType = ProductType::all();
-                                    foreach ($ProductType as $product_type) {
-                                        echo '<li><a class="dropdown-item" href="'.APP_URL .'category/' . $product_type->id_type. '">' . $product_type->name . '</a></li>';
-                                    }
-                                ?>
+                                @php
+
+                                use App\Models\ProductType;
+
+                                $ProductType = ProductType::all();
+                                foreach ($ProductType as $product_type) {
+                                echo '<li><a class="dropdown-item" href="' . APP_URL . 'category/' . $product_type->id_type . '">' . $product_type->name . '</a></li>';
+                                }
+                                @endphp
                             </ul>
                         </li>
                         <li class="nav-item">
@@ -90,8 +102,19 @@
                     </form>
                     <div class="d-flex">
                         <a href="{{ APP_URL . 'cart' }}" class="btn btn-outline-light me-2">
+                            @php
+                            use App\Models\Cart;
+
+                            $cartCount = 0;
+                            if (isset($_SESSION['user_id'])) {
+                                $listCart = Cart::where('id_user', '=', $_SESSION['user_id'])->get();
+                                foreach ($listCart as $cartItem) {
+                                    $cartCount += 1;
+                                }
+                            }
+                            @endphp
                             <i class="fas fa-shopping-cart"></i>
-                            <span class="badge bg-danger">0</span>
+                            <span class="badge bg-danger">{{ $cartCount }}</span>
                         </a>
                         @if(isset($_SESSION['user_id']))
                         <div class="dropdown">
@@ -102,7 +125,7 @@
                                 @if(isset($_SESSION['user_role']) && $_SESSION['user_role'] == 1)
                                 <li><a class="dropdown-item" href="{{ APP_URL . 'admin' }}">Trang quản trị</a></li>
                                 @endif
-                                <li><a class="dropdown-item" href="{{ APP_URL . 'user/profile/'. $_SESSION['user_id'] }}">Xem thông tin</a></li>
+                                <li><a class="dropdown-item" href="{{ APP_URL . 'user/profile' }}">Xem thông tin</a></li>
                                 <li><a class="dropdown-item" href="{{ APP_URL . 'order' }}">Đơn hàng của bạn</a></li>
                                 <li><a class="dropdown-item" href="{{ APP_URL . 'logout'}}">Đăng xuất</a></li>
                             </ul>
@@ -190,9 +213,9 @@
             </div>
         </div>
     </footer>
-
-    @yield('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    @yield('scripts')
 </body>
 
 </html>

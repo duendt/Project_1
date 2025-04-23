@@ -1,60 +1,53 @@
 @extends('layouts.main')
 @section('title', 'Đăng ký')
 @section('content')
-<div class="container my-5">
+<div class="container my-5" style="background-color: #f8f9fa; border-radius: 15px; padding: 30px;">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
+            <div class="card shadow border-0" style="border-radius: 15px;">
+                <div class="card-header bg-gradient-primary text-center py-4" style="border-radius: 15px 15px 0 0; color: black; font-weight: 500;">
                     <h4 class="mb-0">Đăng ký tài khoản</h4>
                 </div>
-                <div class="card-body">
-                    @if(isset($_SESSION['error']))
-                    <div class="alert alert-danger">
-                        {{ $_SESSION['error'] }}
-                        @php unset($_SESSION['error']); @endphp
-                    </div>
-                    @endif
-                    
-                    <form action="{{ APP_URL . 'dang-ky' }}" method="POST">
-                        <div class="mb-3">
+                <div class="card-body p-5">
+                    <form action="{{ APP_URL . 'register' }}" method="POST">
+                        <div class="mb-4">
                             <label for="name" class="form-label">Họ và tên</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Nhập họ và tên" required>
+                            <input type="text" class="form-control form-control-lg" id="name" name="name" placeholder="Nhập họ và tên"  style="border-radius: 10px;">
                         </div>
                         
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Nhập email" required>
+                            <input type="email" class="form-control form-control-lg" id="email" name="email" placeholder="Nhập email"  style="border-radius: 10px;">
                         </div>
                         
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="phone" class="form-label">Số điện thoại</label>
-                            <input type="tel" class="form-control" id="phone" name="phone" placeholder="Nhập số điện thoại" required>
+                            <input type="tel" class="form-control form-control-lg" id="phone" name="phone" placeholder="Nhập số điện thoại"  style="border-radius: 10px;">
                         </div>
                         
-                        <div class="mb-3">
+                        <div class="mb-4">
+                            <label for="address" class="form-label">Địa chỉ</label>
+                            <input type="text" class="form-control form-control-lg" id="address" name="address" placeholder="Nhập địa chỉ" style="border-radius: 10px;">
+                        </div>
+                        
+                        <div class="mb-4">
                             <label for="password" class="form-label">Mật khẩu</label>
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Nhập mật khẩu" required>
-                            <small class="form-text text-muted">Mật khẩu phải có ít nhất 8 ký tự</small>
+                            <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Nhập mật khẩu"  style="border-radius: 10px;">
+                            <small class="form-text text-muted">Mật khẩu phải có ít nhất 6 ký tự</small>
                         </div>
                         
-                        <div class="mb-3">
+                        <div class="mb-4">
                             <label for="password_confirmation" class="form-label">Xác nhận mật khẩu</label>
-                            <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Nhập lại mật khẩu" required>
-                        </div>
-                        
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="terms" required>
-                            <label class="form-check-label" for="terms">Tôi đồng ý với <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">điều khoản sử dụng</a></label>
+                            <input type="password" class="form-control form-control-lg" id="password_confirmation" name="password_confirmation" placeholder="Nhập lại mật khẩu"  style="border-radius: 10px;">
                         </div>
                         
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">Đăng ký</button>
+                            <button type="submit" class="btn btn-primary btn-lg" style="border-radius: 10px;">Đăng ký</button>
                         </div>
                     </form>
                     
-                    <div class="mt-3 text-center">
-                        <p>Đã có tài khoản? <a href="{{ APP_URL . 'dang-nhap' }}">Đăng nhập</a></p>
+                    <div class="mt-4 text-center">
+                        <p>Đã có tài khoản? <a href="{{ APP_URL . 'dang-nhap' }}" class="text-primary">Đăng nhập</a></p>
                     </div>
                 </div>
             </div>

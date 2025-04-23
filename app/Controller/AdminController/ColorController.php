@@ -25,12 +25,18 @@ class ColorController
         if (empty($data['name'])) {
             $_SESSION['error'] = 'Tên màu không được để trống!';
             return redirect('/admin/colors/create');
-        } else {
-            // Create color
-            Color::create($data);
-            $_SESSION['message'] = 'Thêm màu sắc thành công!';
+        }
+        $dataCheck = Color::select(['color.*'])
+            ->where('name', '=', $data['name'])
+            ->get();
+        if (count($dataCheck) > 0) {
+            $_SESSION['error'] = 'Tên màu đã tồn tại!';
             return redirect('/admin/colors/create');
         }
+
+        Color::create($data);
+        $_SESSION['message'] = 'Thêm màu sắc thành công!';
+        return redirect('/admin/colors/create');
     }
 
     public function edit($id)
@@ -46,12 +52,18 @@ class ColorController
         if (empty($data['name'])) {
             $_SESSION['error'] = 'Tên màu không được để trống!';
             return redirect('/admin/colors/edit/' . $id);
-        } else {
-            // Update color
-            Color::update($data, $id);
-            $_SESSION['message'] = 'Cập nhật màu sắc thành công!';
+        }
+        $dataCheck = Color::select(['color.*'])
+            ->where('name', '=', $data['name'])
+            ->get();
+        if (count($dataCheck) > 0) {
+            $_SESSION['error'] = 'Tên màu đã tồn tại!';
             return redirect('/admin/colors/edit/' . $id);
         }
+
+        Color::update($data, $id);
+        $_SESSION['message'] = 'Cập nhật màu sắc thành công!';
+        return redirect('/admin/colors/edit/' . $id);
     }
 
     public function destroy($id)
