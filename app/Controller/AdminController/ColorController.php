@@ -55,6 +55,7 @@ class ColorController
         }
         $dataCheck = Color::select(['color.*'])
             ->where('name', '=', $data['name'])
+            ->andWhere('id_color', '!=', $id)
             ->get();
         if (count($dataCheck) > 0) {
             $_SESSION['error'] = 'Tên màu đã tồn tại!';

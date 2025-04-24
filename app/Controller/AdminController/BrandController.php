@@ -56,6 +56,7 @@ class BrandController
         }
         $dataCheck = Brand::select(['brand.*'])
             ->where('name', '=', $data['name'])
+            ->andWhere('id_brand', '!=', $id)
             ->get();
         if (count($dataCheck) > 0) {
             $_SESSION['error'] = 'Tên thương hiệu đã tồn tại!';

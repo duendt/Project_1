@@ -13,7 +13,7 @@ class HomeController
     public function index()
     {
         $featuredProducts = Product::select(['products.*'])
-            ->limit(5)
+            ->limit(8)
             ->get();
 
         // Lấy một phiên bản cho mỗi sản phẩm
@@ -31,7 +31,7 @@ class HomeController
 
         $newProducts = Product::select(['products.*'])
             ->orderBy('id_product', 'DESC')
-            ->limit(5)
+            ->limit(8)
             ->get();
 
         foreach ($newProducts as $product) {

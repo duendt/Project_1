@@ -79,6 +79,7 @@ class ProductController
         }
         $dataCheck = Product::select(['products.*'])
             ->where('name', '=', $data['name'])
+            ->andWhere('id_product', '!=', $id)
             ->get();
         if (count($dataCheck) > 0) {
             $_SESSION['error'] = 'Tên sản phẩm đã tồn tại!';

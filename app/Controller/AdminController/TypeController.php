@@ -56,6 +56,7 @@ class TypeController
         }
         $dataCheck = ProductType::select(['product_type.*'])
             ->where('name', '=', $data['name'])
+            ->andWhere('id_type', '!=', $id)
             ->get();
         if (count($dataCheck) > 0) {
             $_SESSION['error'] = 'Loại sản phẩm đã tồn tại!';

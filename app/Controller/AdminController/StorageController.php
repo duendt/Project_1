@@ -65,6 +65,7 @@ class StorageController
         }
         $dataCheck = Storage::select(['storage.*'])
             ->where('storage', '=', $data['storage'])
+            ->andWhere('id_storage', '!=', $id)
             ->get();
         if (count($dataCheck) > 0) {
             $_SESSION['error'] = 'Dung lượng đã tồn tại!';
